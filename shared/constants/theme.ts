@@ -11,6 +11,7 @@ const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
+    primaryColor: '#0097D3',
     text: '#FFFFFF',
     background: '#fff',
     tint: tintColorLight,
@@ -19,6 +20,7 @@ export const Colors = {
     tabIconSelected: tintColorLight,
   },
   dark: {
+    primaryColor: '#0097D3',
     text: '#ECEDEE',
     background: '#151718',
     tint: tintColorDark,
@@ -31,7 +33,7 @@ export const Colors = {
 export const Fonts = Platform.select({
   ios: {
     /** Panton as default font family */
-    sans: FontFamilies.Panton,
+    sans: FontFamilies.PantonRegular,
     /** PantonNarrow for narrow text */
     narrow: FontFamilies.PantonNarrow,
     /** System serif fallback */
@@ -43,7 +45,7 @@ export const Fonts = Platform.select({
   },
   default: {
     /** Panton as default font family */
-    sans: FontFamilies.Panton,
+    sans: FontFamilies.PantonRegular,
     /** PantonNarrow for narrow text */
     narrow: FontFamilies.PantonNarrow,
     /** System serif fallback */
