@@ -39,5 +39,10 @@ yarn-error.*
 app-example
 
 # generated native folders
-/ios
+/ios/*
+!/ios/imaageqmobilev2/
+/ios/imaageqmobilev2/*
+!/ios/imaageqmobilev2/Info.plist
+!/ios/imaageqmobilev2/SplashScreen.storyboard
+!/ios/imaageqmobilev2/Images.xcassets/
 /android
