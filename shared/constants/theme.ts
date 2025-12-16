@@ -12,6 +12,7 @@ const tintColorDark = '#fff';
 export const Colors = {
   light: {
     primaryColor: '#0097D3',
+    disabledColor: '#A8A8A8',
     text: '#FFFFFF',
     background: '#fff',
     tint: tintColorLight,
@@ -21,6 +22,7 @@ export const Colors = {
   },
   dark: {
     primaryColor: '#0097D3',
+    disabledColor: '#A8A8A8',
     text: '#ECEDEE',
     background: '#151718',
     tint: tintColorDark,

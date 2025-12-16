@@ -2,9 +2,9 @@ import { Colors } from "@/shared/constants/theme";
 import { ActivityIndicator, StyleSheet, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 import Label from "../Label";
 
-export default function PrimaryButton({ styles, label, labelStyle, onPress, isLoading }: { styles?: ViewStyle, label: string, labelStyle?: TextStyle, onPress: () => void, isLoading?: boolean }) {
+export default function PrimaryButton({ styles, label, labelStyle, onPress, isLoading, disabled }: { styles?: ViewStyle, label: string, labelStyle?: TextStyle, onPress: () => void, isLoading?: boolean, disabled?: boolean }) {
     return (
-        <TouchableOpacity style={[_styles.container, styles]} onPress={onPress}>
+        <TouchableOpacity style={[_styles.container, styles, { backgroundColor: disabled ? Colors.dark.disabledColor : Colors.dark.primaryColor }]} onPress={onPress}>
             {
                 isLoading ? (
                     <ActivityIndicator size="small" color={Colors.dark.text} />
