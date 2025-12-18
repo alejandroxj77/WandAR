@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
+import { AuthenticationProvider } from '@/domain/contexts/authenticationContext';
 import { useColorScheme } from '@/domain/hooks/use-color-scheme';
 import { PantonFonts } from '@/shared/constants/fonts';
 
@@ -33,9 +34,11 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="authentication" options={{ headerShown: false }} />
-      </Stack>
+      <AuthenticationProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="authentication" options={{ headerShown: false }} />
+        </Stack>
+      </AuthenticationProvider>
     </ThemeProvider>
   );
 }

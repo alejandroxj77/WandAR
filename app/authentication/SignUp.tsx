@@ -1,8 +1,7 @@
-import { useAuthentication } from "@/domain/contexts/authenticationContext";
 import PrimaryButton from "@/presentation/atoms/buttons/PrimaryButton";
-import TextButton from "@/presentation/atoms/buttons/TextButton";
 import Label from "@/presentation/atoms/Label";
 import LinearGradientBackground from "@/presentation/atoms/shared/LinearGradientBackground";
+import { FormCheckboxRow } from "@/presentation/molecules/FormCheckboxRow";
 import { InputIconMolecule } from "@/presentation/molecules/InputIcon";
 import LabelTextButtom from "@/presentation/molecules/LabelTextButtom";
 import WandARIcon from "@/presentation/molecules/WandARIcon";
@@ -10,9 +9,8 @@ import { router } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function Login() {
+export default function SignUp() {
     const insets = useSafeAreaInsets();
-    const {createUser} = useAuthentication();
     return (
         <LinearGradientBackground>
             <View style={{
@@ -21,37 +19,24 @@ export default function Login() {
             }}>
                 <View style={styles.bodyContainer}>
                     <WandARIcon appIconStyle={{ height: 80, width: 80 }} appNameStyle={{ height: 35, width: 200 }} />
-                    <Label style={styles.title}>Welcome!</Label>
+                    <Label style={styles.title}>Sign Up</Label>
                     <View style={{height: 30}}/>
+                    <InputIconMolecule prefixIcon="user" placeholder='Username'/>
                     <InputIconMolecule prefixIcon="mail" placeholder='Email'/>
                     <InputIconMolecule prefixIcon="password" placeholder='Password' postfixIcon="toggle_password"/>
-                    <View style={{flexDirection: 'column',  alignItems: 'flex-end', width: '100%'}}>
-                        <TextButton label="Forgot password?" onPress={()=>{}}/>
-                    </View>
+                    <InputIconMolecule prefixIcon="password" placeholder='Re-Password' postfixIcon="toggle_password"/>
                 </View>
-                <PrimaryButton label="Enter" onPress={async ()=>{
-                    await createUser({
-                        profile: {
-                            avatar_image_url: "",
-                            camera_access_granted: true,
-                            created_at: "",
-                            location_access_granted: true,
-                            location_latitude: 123,
-                            location_longitude: 123,
-                            onboarding_completed: true,
-                            updated_at: "",
-                            username: "Pepito",
-                            email: "pepito@wandai.com",
-                            password: "123123",
-                        }
-                    });
-                }}/>
+                <View>
+                    <FormCheckboxRow checked label="I agree to the " linkText="terms and conditions" onToggle={() => {}}/>
+                    <FormCheckboxRow checked={false} label="I accept camera and location services" onToggle={() => {}}/>
+                    <PrimaryButton label="Enter" onPress={()=>{}}/>
+                </View>
                 <View style={{height: 10}}/>
                 <LabelTextButtom 
-                    label="Don’t have an account?" 
+                    label="Already have an account?" 
                     postfixText=" Click Here" 
                     postfixOnPress={()=>{
-                        router.push('/authentication/SignUp');
+                        router.push('/authentication/Login');
                     }}/>
             </View>
         </LinearGradientBackground>
