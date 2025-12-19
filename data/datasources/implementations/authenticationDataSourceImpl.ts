@@ -28,15 +28,28 @@ export class AuthenticationDataSourceImpl implements authenticationDataSource {
                 throw new Error(error.message ?? "Unexpected error");
             }
             return {
-                supabase_user_id: data.user!.id,
+                user: data.user,
                 session: data.session,
             } as UserInfoSupabase;
         } catch (error) {
             throw error;
         }
     }
-    async signInUser(): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async signInUser(email: string, password: string): Promise<UserInfoSupabase> {
+        try {
+            const {data, error} = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+            if (error) {
+                throw new Error(error.message ?? "Unexpected error");
+            }
+            return {
+                user: data.user,
+                session: data.session,
+            } as UserInfoSupabase;
+        } catch (error) {
+            throw error;
+        }
     }
-
 }

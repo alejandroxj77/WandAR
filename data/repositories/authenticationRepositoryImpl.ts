@@ -21,8 +21,11 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
             throw error;
         }
     }
-    signInUser(): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async signInUser(email: string, password: string): Promise<UserInfoSupabase> {
+         try {
+            return await this.dataSource.signInUser(email, password);
+        } catch (error) {
+            throw error;
+        }
     }
-    
 }

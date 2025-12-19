@@ -6,13 +6,30 @@ import LinearGradientBackground from "@/presentation/atoms/shared/LinearGradient
 import { InputIconMolecule } from "@/presentation/molecules/InputIcon";
 import LabelTextButtom from "@/presentation/molecules/LabelTextButtom";
 import WandARIcon from "@/presentation/molecules/WandARIcon";
+import { useLoader } from "@/shared/context/loaderContext";
 import { router } from "expo-router";
+import { Controller, useForm } from 'react-hook-form';
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function Login() {
     const insets = useSafeAreaInsets();
-    const {createUser} = useAuthentication();
+    const { login } = useAuthentication();
+    const { control, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: { email: '', password: '' }
+    });
+    const { showLoader, hideLoader } = useLoader();
+    const onSubmit = async (data: {
+        email: string;
+        password: string;
+    }) => {
+        try {
+            showLoader({text: ''});
+            await login({ email: data.email, password: data.password });
+        } finally {
+            hideLoader();
+        }
+    };
     return (
         <LinearGradientBackground>
             <View style={{
@@ -23,36 +40,66 @@ export default function Login() {
                     <WandARIcon appIconStyle={{ height: 80, width: 80 }} appNameStyle={{ height: 35, width: 200 }} />
                     <Label style={styles.title}>Welcome!</Label>
                     <View style={{height: 30}}/>
-                    <InputIconMolecule prefixIcon="mail" placeholder='Email'/>
-                    <InputIconMolecule prefixIcon="password" placeholder='Password' postfixIcon="toggle_password"/>
+                    <Controller
+                        control={control}
+                        name="email"
+                        rules={{
+                            required: "Email is required",
+                            validate: (value) => {
+                                if (!value) return true;
+
+                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                
+                                if (!emailRegex.test(value)) {
+                                    return "Please enter a valid email address";
+                                }
+
+                                return true;
+                            }
+                        }}
+                        render={({ field: { onChange, onBlur, value } })=>{
+                            return <View style={{ width: '100%' }}>
+                                <InputIconMolecule prefixIcon="mail" placeholder='Email' onChangeText={onChange} value={value} onBlur={onBlur}/>
+                                {errors.email && (
+                                    <Label style={styles.errorText}>{errors.email.message}</Label>
+                                )}
+                            </View>
+                        }}
+                    />
+                    <Controller
+                        control={control}
+                        name="password"
+                        rules={{
+                            required: "Password is required",
+                        }}
+                        render={({ field: { onChange, onBlur, value } })=>{
+                            return <View style={{ width: '100%' }}>
+                                <InputIconMolecule 
+                                    prefixIcon="password" 
+                                    placeholder='Password' 
+                                    postfixIcon="toggle_password" 
+                                    onChangeText={onChange} 
+                                    value={value} 
+                                    onBlur={onBlur}
+                                />
+                                {errors.password && (
+                                    <Label style={styles.errorText}>{errors.password.message}</Label>
+                                )}
+                            </View>
+                        }}
+                    />
                     <View style={{flexDirection: 'column',  alignItems: 'flex-end', width: '100%'}}>
                         <TextButton label="Forgot password?" onPress={()=>{}}/>
                     </View>
                 </View>
-                <PrimaryButton label="Enter" onPress={async ()=>{
-                    await createUser({
-                        profile: {
-                            avatar_image_url: "",
-                            camera_access_granted: true,
-                            created_at: "",
-                            location_access_granted: true,
-                            location_latitude: 123,
-                            location_longitude: 123,
-                            onboarding_completed: true,
-                            updated_at: "",
-                            username: "Pepito",
-                            email: "pepito@wandai.com",
-                            password: "123123",
-                        }
-                    });
-                }}/>
+                <PrimaryButton label="Enter" onPress={handleSubmit(onSubmit)}/>
                 <View style={{height: 10}}/>
                 <LabelTextButtom 
                     label="Don’t have an account?" 
                     postfixText=" Click Here" 
                     postfixOnPress={()=>{
-                        router.push('/authentication/SignUp');
-                    }}/>
+                        router.replace('/authentication/SignUp');
+                }}/>
             </View>
         </LinearGradientBackground>
     );
@@ -75,5 +122,12 @@ const styles = StyleSheet.create({
         marginTop: 88,
         fontSize: 30,
         fontWeight: 'bold',
+    },
+    errorText: {
+        color: '#FF5A5F',
+        fontSize: 12,
+        marginTop: -10,
+        marginBottom: 10,
+        marginLeft: 15,
     },
 });

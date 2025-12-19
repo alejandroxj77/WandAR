@@ -37,7 +37,7 @@ export const InputIconMolecule = ({
   let onPressPostfix: (() => void) | undefined = undefined;
 
   if (isPasswordToggle) {
-    PostfixComponent = secureTextEntry ? EyeClose : Eye;
+    PostfixComponent = secureTextEntry ? Eye : EyeClose;
     onPressPostfix = () => setSecureTextEntry(prev => !prev);
   } else if (postfixIcon === "search") {
     PostfixComponent = Search;

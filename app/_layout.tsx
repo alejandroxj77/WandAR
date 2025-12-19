@@ -8,6 +8,7 @@ import 'react-native-reanimated';
 import { AuthenticationProvider } from '@/domain/contexts/authenticationContext';
 import { useColorScheme } from '@/domain/hooks/use-color-scheme';
 import { PantonFonts } from '@/shared/constants/fonts';
+import { LoaderProvider } from '@/shared/context/loaderContext';
 
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
@@ -34,11 +35,13 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AuthenticationProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="authentication" options={{ headerShown: false }} />
-        </Stack>
-      </AuthenticationProvider>
+      <LoaderProvider>
+        <AuthenticationProvider>
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="authentication" options={{ headerShown: false }} />
+          </Stack>
+        </AuthenticationProvider>
+      </LoaderProvider>
     </ThemeProvider>
   );
 }

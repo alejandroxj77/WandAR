@@ -3,5 +3,5 @@ import { ProfileEntity, UserInfoSupabase } from "@/data/datasources/entities/aut
 export default interface AuthenticationRepository {
     createUser(user: ProfileEntity): Promise<boolean>;
     signUpUser(email: string, password: string): Promise<UserInfoSupabase>;
-    signInUser(): Promise<boolean>;
+    signInUser(email: string, password: string): Promise<UserInfoSupabase>;
 }

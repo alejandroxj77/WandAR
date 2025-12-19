@@ -1,4 +1,4 @@
-import { Session } from "@supabase/supabase-js";
+import { Session, User } from "@supabase/supabase-js";
 
 export type ProfileEntity = {
   supabase_user_id?: string;
@@ -16,7 +16,21 @@ export type ProfileEntity = {
   updated_at: string;
 };
 
+export const defaultProfile: ProfileEntity = {
+  username: "",
+  avatar_image_url: "",
+  location_latitude: 0,
+  location_longitude: 0,
+  onboarding_completed: false,
+  camera_access_granted: false,
+  location_access_granted: false,
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  email: "",
+  password: ""
+};
+
 export type UserInfoSupabase = {
-    supabase_user_id: string;
+    user: User;
     session: Session;
 }
