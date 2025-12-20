@@ -3,8 +3,6 @@ import { AuthenticationRepositoryImpl } from "@/data/repositories/authentication
 
 export default async function signInUseCase({ email, password, authenticationRepository }: { email: string, password: string, authenticationRepository: AuthenticationRepositoryImpl }): Promise<UserInfoSupabase> {
     const userInfoSupabase = await authenticationRepository.signInUser(email, password);
-    console.log('userInfoSupabase - signin')
-    console.log(userInfoSupabase)
     return userInfoSupabase;
 };
 

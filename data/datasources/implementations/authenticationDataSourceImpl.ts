@@ -1,13 +1,13 @@
 import httpClient from "@/shared/clients/httpClient";
 import { supabase } from "@/shared/clients/supabase";
-import { ProfileEntity, UserInfoSupabase } from "../entities/authenticationDataSourceEntity";
+import { mapToProfileEntity, ProfileEntity, UserInfoSupabase } from "../entities/authenticationDataSourceEntity";
 import authenticationDataSource from "../interfaces/authenticationDataSourceInterface";
 
 export class AuthenticationDataSourceImpl implements authenticationDataSource {
     async createUser(profile: ProfileEntity): Promise<boolean> {
         try {
             let response = await httpClient.post(
-                `profile`,
+                `v1/profile`,
                 {...profile},
             );
             if(response.status >= 400) {
@@ -48,6 +48,28 @@ export class AuthenticationDataSourceImpl implements authenticationDataSource {
                 user: data.user,
                 session: data.session,
             } as UserInfoSupabase;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getProfile(): Promise<ProfileEntity> {
+        try {
+            let response = await httpClient.get(
+                `v1/profile`,
+            );
+            if(response.status >= 400) {
+                throw new Error(response?.data?.message ?? "Unexpected error");
+            }
+            return mapToProfileEntity(response?.data?.profile);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async signOutUser(): Promise<void> {
+        try {
+            await supabase.auth.signOut();
         } catch (error) {
             throw error;
         }

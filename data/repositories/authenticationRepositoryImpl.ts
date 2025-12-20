@@ -28,4 +28,20 @@ export class AuthenticationRepositoryImpl implements AuthenticationRepository {
             throw error;
         }
     }
+
+    async getProfile(): Promise<ProfileEntity> {
+         try {
+            return await this.dataSource.getProfile();
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async signOutUser(): Promise<void> {
+         try {
+            return await this.dataSource.signOutUser();
+        } catch (error) {
+            throw error;
+        }
+    }
 }

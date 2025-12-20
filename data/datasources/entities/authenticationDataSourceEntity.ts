@@ -16,6 +16,23 @@ export type ProfileEntity = {
   updated_at: string;
 };
 
+export const mapToProfileEntity = (data: any): ProfileEntity => {
+  return {
+    supabase_user_id: data.supabaseUserId,
+    username: data.username,
+    email: data.email,
+    avatar_image_url: data.avatarImageUrl,
+    location_latitude: Number(data.locationLatitude) || 0,
+    location_longitude: Number(data.locationLongitude) || 0,
+    onboarding_completed: Boolean(data.onboardingCompleted),
+    camera_access_granted: Boolean(data.cameraAccessGranted),
+    location_access_granted: Boolean(data.locationAccessGranted),
+    created_at: data.createdAt,
+    updated_at: data.updatedAt,
+    deleted_at: data.deletedAt,
+  };
+};
+
 export const defaultProfile: ProfileEntity = {
   username: "",
   avatar_image_url: "",
