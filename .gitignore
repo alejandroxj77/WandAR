@@ -41,9 +41,25 @@ app-example
 
 # generated native folders
 /ios/*
-!/ios/imaageqmobilev2/
-/ios/imaageqmobilev2/*
-!/ios/imaageqmobilev2/Info.plist
-!/ios/imaageqmobilev2/SplashScreen.storyboard
-!/ios/imaageqmobilev2/Images.xcassets/
-/android
+!/ios/WandAR/
+/ios/WandAR/*
+!/ios/WandAR/Info.plist
+!/ios/WandAR/SplashScreen.storyboard
+!/ios/WandAR/Images.xcassets/
+!/ios/WandAR/Images.xcassets/**
+!/ios/Podfile
+!/ios/Podfile.lock
+/android/*
+!/android/build.gradle
+!/android/settings.gradle
+!/android/gradle.properties
+!/android/app/
+/android/app/*
+!/android/app/build.gradle
+!/android/app/src/
+/android/app/src/*
+!/android/app/src/main/
+/android/app/src/main/*
+!/android/app/src/main/AndroidManifest.xml
+!/android/app/src/main/res/
+!/android/app/src/main/res/**
