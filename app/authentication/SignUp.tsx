@@ -1,31 +1,30 @@
+import { defaultProfile, ProfileEntity } from "@/data/datasources/entities/authenticationDataSourceEntity";
 import { useAuthentication } from "@/domain/contexts/authenticationContext";
 import PrimaryButton from "@/presentation/atoms/buttons/PrimaryButton";
-import TextButton from "@/presentation/atoms/buttons/TextButton";
 import Label from "@/presentation/atoms/Label";
 import LinearGradientBackground from "@/presentation/atoms/shared/LinearGradientBackground";
+import { FormCheckboxRow } from "@/presentation/molecules/FormCheckboxRow";
 import { InputIconMolecule } from "@/presentation/molecules/InputIcon";
 import LabelTextButtom from "@/presentation/molecules/LabelTextButtom";
 import WandARIcon from "@/presentation/molecules/WandARIcon";
 import { useLoader } from "@/shared/context/loaderContext";
 import { router } from "expo-router";
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function Login() {
+export default function SignUp() {
     const insets = useSafeAreaInsets();
-    const { login } = useAuthentication();
-    const { control, handleSubmit, formState: { errors } } = useForm({
-        defaultValues: { email: '', password: '' }
+    const {createUser} = useAuthentication();
+    const { control, handleSubmit, formState: { errors }, watch } = useForm({
+        defaultValues: {...defaultProfile, repassword: ''},
     });
+    const passwordValue = watch("password");
     const { showLoader, hideLoader } = useLoader();
-    const onSubmit = async (data: {
-        email: string;
-        password: string;
-    }) => {
+    const onSubmit = async (data: ProfileEntity) => {
         try {
             showLoader({text: ''});
-            await login({ email: data.email, password: data.password });
+            await createUser({ profile: data });
         } finally {
             hideLoader();
         }
@@ -38,8 +37,29 @@ export default function Login() {
             }}>
                 <View style={styles.bodyContainer}>
                     <WandARIcon appIconStyle={{ height: 80, width: 80 }} appNameStyle={{ height: 35, width: 200 }} />
-                    <Label style={styles.title}>Welcome!</Label>
+                    <Label style={styles.title}>Sign Up</Label>
                     <View style={{height: 30}}/>
+                    <Controller
+                        control={control}
+                        name="username"
+                        rules={{
+                            required: "Username is required",
+                        }}
+                        render={({ field: { onChange, onBlur, value } })=>{
+                            return <View style={{ width: '100%' }}>
+                                <InputIconMolecule 
+                                    prefixIcon="user"
+                                    placeholder='Username'
+                                    onChangeText={onChange} 
+                                    value={value} 
+                                    onBlur={onBlur}
+                                />
+                                {errors.username && (
+                                    <Label style={styles.errorText}>{errors.username.message}</Label>
+                                )}
+                            </View>
+                        }}
+                    />
                     <Controller
                         control={control}
                         name="email"
@@ -71,6 +91,12 @@ export default function Login() {
                         name="password"
                         rules={{
                             required: "Password is required",
+                            minLength: { value: 8, message: "Minimum 8 characters" },
+                            validate: {
+                                hasUpperCase: (v='') => /[A-Z]/.test(v) || "Must include an uppercase letter",
+                                hasLowerCase: (v='') => /[a-z]/.test(v) || "Must include a lowercase letter",
+                                hasNumber: (v='') => /[0-9]/.test(v) || "Must include a number",
+                            }
                         }}
                         render={({ field: { onChange, onBlur, value } })=>{
                             return <View style={{ width: '100%' }}>
@@ -88,18 +114,48 @@ export default function Login() {
                             </View>
                         }}
                     />
-                    <View style={{flexDirection: 'column',  alignItems: 'flex-end', width: '100%'}}>
-                        <TextButton label="Forgot password?" onPress={()=>{}}/>
-                    </View>
+                    <Controller
+                        control={control}
+                        name="repassword"
+                        rules={{
+                            required: "Password is required",
+                            minLength: { value: 8, message: "Minimum 8 characters" },
+                            validate: {
+                                hasUpperCase: (v='') => /[A-Z]/.test(v) || "Must include an uppercase letter",
+                                hasLowerCase: (v='') => /[a-z]/.test(v) || "Must include a lowercase letter",
+                                hasNumber: (v='') => /[0-9]/.test(v) || "Must include a number",
+                                matchPassword: (v='') => v === passwordValue || "Passwords do not match"
+                            }
+                        }}
+                        render={({ field: { onChange, onBlur, value } })=>{
+                            return <View style={{ width: '100%' }}>
+                                <InputIconMolecule 
+                                    prefixIcon="password" 
+                                    placeholder='Re-Password' 
+                                    postfixIcon="toggle_password"
+                                    onChangeText={onChange} 
+                                    value={value} 
+                                    onBlur={onBlur}
+                                />
+                                {errors.repassword && (
+                                    <Label style={styles.errorText}>{errors.repassword.message}</Label>
+                                )}
+                            </View>
+                        }}
+                    />
                 </View>
-                <PrimaryButton label="Enter" onPress={handleSubmit(onSubmit)}/>
+                <View>
+                    <FormCheckboxRow checked label="I agree to the " linkText="terms and conditions" onToggle={() => {}}/>
+                    <FormCheckboxRow checked={false} label="I accept camera and location services" onToggle={() => {}}/>
+                    <PrimaryButton label="Enter" onPress={handleSubmit(onSubmit)}/>
+                </View>
                 <View style={{height: 10}}/>
                 <LabelTextButtom 
-                    label="Don’t have an account?" 
+                    label="Already have an account?" 
                     postfixText=" Click Here" 
                     postfixOnPress={()=>{
-                        router.replace('/authentication/SignUp');
-                }}/>
+                        router.replace('/authentication/Login');
+                    }}/>
             </View>
         </LinearGradientBackground>
     );
@@ -121,6 +177,7 @@ const styles = StyleSheet.create({
     title: {
         marginTop: 88,
         fontSize: 30,
+        fontWeight: 'bold',
     },
     errorText: {
         color: '#FF5A5F',
