@@ -28,7 +28,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wandar</string>
-				<string>com.seeker-xj77.WandAR</string>
+				<string>com.paul.WandAR</string>
 			</array>
 		</dict>
 		<dict>
