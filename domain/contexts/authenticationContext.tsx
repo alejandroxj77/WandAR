@@ -21,7 +21,7 @@ type AuthenticationProviderProps = {
 const AuthenticationContext = createContext({
     session: {} as Session | null,
     profile: {} as ProfileEntity | null,
-    createUser: async ({ profile }: {profile: ProfileEntity}): Promise<boolean> => { return true; },
+    createUser: async ({ profile }: { profile: ProfileEntity }): Promise<boolean> => { return true; },
     login: async ({ email, password }: { email: string, password: string }): Promise<boolean> => { return true; },
     signOut: async (): Promise<void> => { },
 });
@@ -34,11 +34,11 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
-        if(profile != null) {
-            router.replace('/shared/Placeholder')
+        if (profile != null) {
+            router.replace('/(tabs)/post-content')
         }
     }, [profile])
-    
+
 
     useEffect(() => {
         supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -47,7 +47,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
 
             if (session) {
                 try {
-                    showLoader({text: ''});
+                    showLoader({ text: '' });
                     setHeaderToken(session)
                     const profileResult = await getProfileUseCase({
                         authenticationRepository,
@@ -55,7 +55,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
 
                     setProfile(profileResult)
                 } finally {
-                   hideLoader();
+                    hideLoader();
                 }
             } else {
                 router.replace('/authentication/Login');
@@ -63,7 +63,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            if(_event == 'SIGNED_OUT'){
+            if (_event == 'SIGNED_OUT') {
                 router.replace('/authentication/Login')
             }
         });
@@ -71,30 +71,30 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
         return () => subscription.unsubscribe();
     }, []);
 
-    function setHeaderToken(session?:Session) {
-        if(session) {
+    function setHeaderToken(session?: Session) {
+        if (session) {
             httpClient.defaults.headers['Authorization'] = `Bearer ${session.access_token}`;
         } else {
             httpClient.defaults.headers['Authorization'] = ``;
         }
     }
 
-    const createUser = async ({ profile }: {profile: ProfileEntity}): Promise<boolean> => {
+    const createUser = async ({ profile }: { profile: ProfileEntity }): Promise<boolean> => {
         try {
-            const {user, session} = await signUpUseCase({
-                email: profile.email!, 
-                password: profile.password!, 
+            const { user, session } = await signUpUseCase({
+                email: profile.email!,
+                password: profile.password!,
                 authenticationRepository,
             });
 
             setSession(session);
             setHeaderToken(session)
             const profileSuccess = await createProfileUseCase({
-                profile: {...profile, supabase_user_id: user.id},
+                profile: { ...profile, supabase_user_id: user.id },
                 authenticationRepository,
             });
 
-            if(profileSuccess) {
+            if (profileSuccess) {
                 const profileResult = await getProfileUseCase({
                     authenticationRepository,
                 });
@@ -116,14 +116,14 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     const login = async ({ email, password }: { email: string, password: string }): Promise<boolean> => {
         try {
             const { session } = await signInUseCase({
-                email: email, 
-                password: password, 
+                email: email,
+                password: password,
                 authenticationRepository,
             });
-            
+
             setSession(session);
             setHeaderToken(session)
-            
+
             const profileResult = await getProfileUseCase({
                 authenticationRepository,
             });
@@ -142,7 +142,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     };
 
     const signOut = async (): Promise<void> => {
-        await signOutUseCase({authenticationRepository});
+        await signOutUseCase({ authenticationRepository });
         setHeaderToken()
     };
 

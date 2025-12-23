@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
     label: {
         fontFamily: FontFamilies.PantonBold,
         fontSize: 16,
-        fontWeight: '700',
         color: Colors.light.text,
     },
 });
