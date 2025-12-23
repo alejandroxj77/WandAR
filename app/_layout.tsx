@@ -4,9 +4,13 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import Toast from 'react-native-toast-message';
 
+import { AuthenticationProvider } from '@/domain/contexts/authenticationContext';
 import { useColorScheme } from '@/domain/hooks/use-color-scheme';
 import { PantonFonts } from '@/shared/constants/fonts';
+import { LoaderProvider } from '@/shared/context/loaderContext';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
@@ -33,9 +37,20 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="authentication" options={{ headerShown: false }} />
-      </Stack>
+      <LoaderProvider>
+        <AuthenticationProvider>
+          <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+          >
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="authentication" options={{ headerShown: false }} />
+            </Stack>
+          </KeyboardAvoidingView>
+        </AuthenticationProvider>
+      </LoaderProvider>
+      <Toast />
     </ThemeProvider>
   );
 }
