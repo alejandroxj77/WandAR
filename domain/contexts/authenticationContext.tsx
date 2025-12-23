@@ -3,9 +3,11 @@ import { AuthenticationDataSourceImpl } from '@/data/datasources/implementations
 import { AuthenticationRepositoryImpl } from '@/data/repositories/authenticationRepositoryImpl';
 import httpClient from '@/shared/clients/httpClient';
 import { supabase } from '@/shared/clients/supabase';
+import { useLoader } from '@/shared/context/loaderContext';
 import { Session } from '@supabase/supabase-js';
 import { router } from 'expo-router';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import Toast from 'react-native-toast-message';
 import createProfileUseCase from '../useCases/createProfile';
 import getProfileUseCase from '../useCases/getProfile';
 import signInUseCase from '../useCases/signInUser';
@@ -29,6 +31,7 @@ const authenticationRepository = new AuthenticationRepositoryImpl(new Authentica
 export const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
     const [profile, setProfile] = useState<ProfileEntity | null>(null);
     const [session, setSession] = useState<Session | null>(null);
+    const { showLoader, hideLoader } = useLoader();
 
     useEffect(() => {
         if(profile != null) {
@@ -38,8 +41,25 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     
 
     useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session);
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
+
+            setSession(session);
+
+            if (session) {
+                try {
+                    showLoader({text: ''});
+                    setHeaderToken(session)
+                    const profileResult = await getProfileUseCase({
+                        authenticationRepository,
+                    });
+
+                    setProfile(profileResult)
+                } finally {
+                   hideLoader();
+                }
+            } else {
+                router.replace('/authentication/Login');
+            }
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
@@ -60,47 +80,65 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     }
 
     const createUser = async ({ profile }: {profile: ProfileEntity}): Promise<boolean> => {
-        const {user, session} = await signUpUseCase({
-            email: profile.email!, 
-            password: profile.password!, 
-            authenticationRepository,
-        });
+        try {
+            const {user, session} = await signUpUseCase({
+                email: profile.email!, 
+                password: profile.password!, 
+                authenticationRepository,
+            });
 
-        setSession(session);
-        setHeaderToken(session)
-        const profileSuccess = await createProfileUseCase({
-           profile: {...profile, supabase_user_id: user.id},
-           authenticationRepository,
-        });
+            setSession(session);
+            setHeaderToken(session)
+            const profileSuccess = await createProfileUseCase({
+                profile: {...profile, supabase_user_id: user.id},
+                authenticationRepository,
+            });
 
-        if(profileSuccess) {
+            if(profileSuccess) {
+                const profileResult = await getProfileUseCase({
+                    authenticationRepository,
+                });
+
+                setProfile(profileResult)
+            }
+
+            return profileSuccess;
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: error?.toString(),
+            });
+            return false;
+        }
+    };
+
+    const login = async ({ email, password }: { email: string, password: string }): Promise<boolean> => {
+        try {
+            const { session } = await signInUseCase({
+                email: email, 
+                password: password, 
+                authenticationRepository,
+            });
+            
+            setSession(session);
+            setHeaderToken(session)
+            
             const profileResult = await getProfileUseCase({
                 authenticationRepository,
             });
 
             setProfile(profileResult)
+
+            return true;
+        } catch (error) {
+            Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: error?.toString(),
+            });
+            return false;
         }
-
-        return profileSuccess;
-    };
-
-    const login = async ({ email, password }: { email: string, password: string }): Promise<boolean> => {
-        const { session } = await signInUseCase({
-            email: email, 
-            password: password, 
-            authenticationRepository,
-        });
-        
-        setSession(session);
-        setHeaderToken(session)
-        
-        const profileResult = await getProfileUseCase({
-            authenticationRepository,
-        });
-
-        setProfile(profileResult)
-
-        return true;
     };
 
     const signOut = async (): Promise<void> => {

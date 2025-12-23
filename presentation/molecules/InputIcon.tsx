@@ -29,6 +29,7 @@ export const InputIconMolecule = ({
 }: InputIconProps & InputAtomProps) => {
 
   const isPasswordToggle = postfixIcon === "toggle_password";
+  const isEmailToggle = prefixIcon === "mail";
   const [secureTextEntry, setSecureTextEntry] = React.useState(isPasswordToggle);
 
   const PrefixComponent = prefixIcon ? PrefixIcons[prefixIcon] : null;
@@ -63,6 +64,7 @@ export const InputIconMolecule = ({
       <InputAtom
         {...props}
         style={styles.input}
+        keyboardType={isEmailToggle ? 'email-address' : undefined}
         secureTextEntry={isPasswordToggle ? secureTextEntry : false}
       />
       
@@ -84,15 +86,14 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.4)',
   },
   iconContainer: {
-    marginRight: 10, // Espaciado entre icono e input
+    marginRight: 10,
   },
   input: {
-    flex: 1, // Esto hace que el input ocupe todo el ancho restante
+    flex: 1,
     height: '100%',
     color: 'white',
-    // Quitamos bordes y fondos que ya tiene el contenedor
     backgroundColor: 'transparent', 
     borderWidth: 0,
-    paddingHorizontal: 5, // Un pequeño respiro interno
+    paddingHorizontal: 5,
   },
 });
