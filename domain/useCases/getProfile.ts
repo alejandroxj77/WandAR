@@ -2,7 +2,11 @@ import { ProfileEntity } from "@/data/datasources/entities/authenticationDataSou
 import { AuthenticationRepositoryImpl } from "@/data/repositories/authenticationRepositoryImpl";
 
 export default async function getProfileUseCase({ authenticationRepository }: { authenticationRepository: AuthenticationRepositoryImpl }): Promise<ProfileEntity> {
-    const response = await authenticationRepository.getProfile();
-    return response;
+    try {
+        const response = await authenticationRepository.getProfile();
+        return response;
+    } catch (error) {
+        throw error;
+    }
 };
 

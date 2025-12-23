@@ -2,7 +2,11 @@ import { ProfileEntity } from "@/data/datasources/entities/authenticationDataSou
 import { AuthenticationRepositoryImpl } from "@/data/repositories/authenticationRepositoryImpl";
 
 export default async function createProfileUseCase({ profile, authenticationRepository }: { profile: ProfileEntity, authenticationRepository: AuthenticationRepositoryImpl }): Promise<boolean> {
-    const isRequestSuccess = await authenticationRepository.createUser(profile);
-    return isRequestSuccess;
+    try {
+        const isRequestSuccess = await authenticationRepository.createUser(profile);
+        return isRequestSuccess;
+    } catch (error) {
+        throw error;
+    }
 };
 
