@@ -44,7 +44,7 @@ const MapModeSelector = () => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '80%',
+    width: '90%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   mapImage: {
-    width: 60,
-    height: 60,
+    width: 75,
+    height: 75,
     borderRadius: 12,
   },
   selectedIndicator: {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 12,
   },
   lockedText: {
-    fontSize: 12,
+    fontSize: 10,
   },
 });
 
