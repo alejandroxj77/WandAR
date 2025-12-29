@@ -1,17 +1,15 @@
 import React from 'react';
-import { StyleSheet, Switch, View, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import Label from '../Label';
+import SettingsCustom from './SwitchCustom';
 
-const SettingsSwitch = ({ label, value, onValueChange, style }: {label: string, value: boolean, onValueChange(): void, style?: ViewStyle}) => {
+const SettingsSwitch = ({ label, value, onValueChange, style }: {label: string, value: boolean, onValueChange(value: boolean): Promise<void>, style?: ViewStyle}) => {
   return (
     <View style={[styles.rowContainer, style]}>
       <Label>{label}</Label>
-      <Switch
-        trackColor={{ false: '#455a64', true: '#00b0ff' }}
-        thumbColor={value ? '#00b0ff' : '#f4f3f4'}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={onValueChange}
+      <SettingsCustom
         value={value}
+        onValueChange={onValueChange}
       />
     </View>
   );

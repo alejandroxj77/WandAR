@@ -1,15 +1,71 @@
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import {
+  FlatList,
+  Modal,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle
+} from 'react-native';
+import Label from '../Label';
 
-const SettingsDropdown = ({ label, value, style }: {label: string, value: string, style?: ViewStyle}) => {
+interface SettingsDropdownProps {
+  label: string;
+  value: string;
+  options: string[]; // Añadimos las opciones
+  onSelect: (item: string) => void; // Callback para cuando se elige algo
+  style?: ViewStyle;
+}
+
+const SettingsDropdown = ({ label, value, options, onSelect, style }: SettingsDropdownProps) => {
+  const [visible, setVisible] = useState(false);
+
+  const toggleDropdown = () => setVisible(!visible);
+
+  const handleSelect = (item: string) => {
+    onSelect(item);
+    setVisible(false);
+  };
+
   return (
     <View style={[styles.rowContainer, style]}>
-      <Text style={styles.label}>{label}</Text>
-      <TouchableOpacity style={styles.dropdownButton} activeOpacity={0.8}>
-        <Text style={styles.dropdownText}>{value}</Text>
-        <Ionicons name="chevron-down" size={20} color="white" />
+      <Label style={styles.label}>{label}</Label>
+      
+      <TouchableOpacity 
+        style={styles.dropdownButton} 
+        activeOpacity={0.8}
+        onPress={toggleDropdown}
+      >
+        <Label style={styles.dropdownText}>{value}</Label>
+        <Ionicons name={visible ? "chevron-up" : "chevron-down"} size={20} color="white" />
       </TouchableOpacity>
+
+      {/* Menú Desplegable */}
+      <Modal visible={visible} transparent animationType="fade">
+        <TouchableWithoutFeedback onPress={() => setVisible(false)}>
+          <View style={styles.modalOverlay}>
+            <View style={styles.optionsContainer}>
+              <FlatList
+                data={options}
+                keyExtractor={(item) => item}
+                renderItem={({ item }) => (
+                  <TouchableOpacity 
+                    style={styles.optionItem} 
+                    onPress={() => handleSelect(item)}
+                  >
+                    <Label>{item}</Label>
+                    {item === value && (
+                      <Ionicons name="checkmark" size={18} color="#4fc3f7" />
+                    )}
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 };
@@ -17,12 +73,6 @@ const SettingsDropdown = ({ label, value, style }: {label: string, value: string
 export default SettingsDropdown;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0d1b2a',
-    padding: 20,
-    justifyContent: 'center',
-  },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -42,7 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 8,
     alignItems: 'center',
-    minWidth: 80,
+    minWidth: 100,
     justifyContent: 'space-between',
   },
   dropdownText: {
@@ -50,7 +100,34 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 5,
   },
-  spacer: {
-    height: 15,
+  // Estilos del Modal/Dropdown
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)', // Oscurece el fondo
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  optionsContainer: {
+    width: '80%',
+    backgroundColor: '#37474f',
+    borderRadius: 12,
+    padding: 10,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  optionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#20292eff',
+  },
+  optionText: {
+    color: 'white',
+    fontSize: 16,
   },
 });

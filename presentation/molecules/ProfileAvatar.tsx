@@ -1,26 +1,36 @@
+import { useAuthentication } from '@/domain/contexts/authenticationContext';
+import { router } from 'expo-router';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import EditButton from '../atoms/icons/editButtom';
 
-const ProfileAvatar = () => {
+const ProfileAvatar = ({onPress}: {onPress?(): Promise<void> | null}) => {
+  const { profile } = useAuthentication();
   return (
     <View style={styles.container}>
-      <View style={styles.avatarWrapper}>
+      <Pressable 
+        style={styles.avatarWrapper}
+        onPress={() => {
+          if(onPress) {
+            onPress();
+            return;
+          }
+          router.push('/profile/profile-edit');
+        }}
+      >
         <View style={styles.orangeCircle}>
           <Image
-            source={{ uri: 'https://i.pravatar.cc/300' }}
+            source={{ uri: profile?.avatar_image_url ?? 'https://i.pravatar.cc/300' }}
             style={styles.image}
           />
         </View>
 
-        <TouchableOpacity 
+        <View 
           style={styles.editButton} 
-          activeOpacity={0.8}
-          onPress={() => console.log('Editar perfil')}
         >
           <EditButton />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </Pressable>
     </View>
   );
 };

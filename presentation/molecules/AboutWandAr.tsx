@@ -11,20 +11,17 @@ const Colors = {
 
 const WandARInfoScreen = () => {
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer} showsVerticalScrollIndicator={false}>
       
-      {/* Bienvenida */}
       <Text style={styles.label}>
         Welcome to WandAR!!{"\n"}
         Leave your augmented reality objects in real world locations for everyone to see.
       </Text>
 
-      {/* Advertencia */}
       <Text style={[styles.label, styles.sectionMargin]}>
         <Text style={styles.warningText}>Warning!!</Text> Posting adult or offensive content may result in the removal of your account.
       </Text>
 
-      {/* Report System */}
       <View style={styles.sectionMargin}>
         <Text style={styles.blueTitle}>Report System:</Text>
         <Text style={styles.label}>
@@ -34,7 +31,6 @@ const WandARInfoScreen = () => {
         </Text>
       </View>
 
-      {/* Object Locations */}
       <View style={styles.sectionMargin}>
         <Text style={styles.blueTitle}>Object Locations:</Text>
         <Text style={styles.label}>
@@ -42,7 +38,6 @@ const WandARInfoScreen = () => {
         </Text>
       </View>
 
-      {/* Public Vs Private Posts */}
       <View style={styles.sectionMargin}>
         <Text style={styles.blueTitle}>Public Vs Private Posts:</Text>
         <Text style={styles.label}>
@@ -50,7 +45,6 @@ const WandARInfoScreen = () => {
         </Text>
       </View>
 
-      {/* Coins */}
       <View style={styles.sectionMargin}>
         <Text style={styles.blueTitle}>Coins:</Text>
         <Text style={styles.label}>
@@ -58,7 +52,6 @@ const WandARInfoScreen = () => {
         </Text>
       </View>
 
-      {/* Sell Slots */}
       <View style={styles.sectionMargin}>
         <Text style={styles.blueTitle}>Sell Slots:</Text>
         <Text style={styles.label}>
@@ -66,7 +59,6 @@ const WandARInfoScreen = () => {
         </Text>
       </View>
 
-      {/* Post Duration */}
       <View style={styles.sectionMargin}>
         <Text style={styles.blueTitle}>Post Duration:</Text>
         <Text style={styles.label}>
@@ -74,7 +66,6 @@ const WandARInfoScreen = () => {
         </Text>
       </View>
 
-      {/* WandAR Pro */}
       <View style={styles.sectionMargin}>
         <Text style={styles.blueTitle}>WandAR Pro:</Text>
         <Text style={styles.label}>
