@@ -35,7 +35,7 @@ const settings = () => {
                     <View style={{ width: '95%', height: 2, backgroundColor: '#0097D3', opacity: .2 }} />
                     <Label style={{ fontSize: 20 }}>{'Updates'}</Label>
                     <SettingsSwitch label="Automatic Updates" onValueChange={(val) => updateSetting('updates', 'automatic_updates', val)} value={profileSettings.updates.automatic_updates} style={{ width: '90%' }} />
-                    <PrimaryButton label="Check For Updates" labelStyle={{ fontSize: 18 }} disabled={!profileSettings.updates.automatic_updates} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={() => { } } />
+                    <PrimaryButton label="Check For Updates" labelStyle={{ fontSize: 18 }} disabled={profileSettings.updates.automatic_updates} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={() => { } } />
                     <View style={{ width: '95%', height: 2, backgroundColor: '#0097D3', opacity: .2 }} />
                     <Label style={{ fontSize: 20 }}>{'Notifications'}</Label>
                     <SettingsDropdown label="Object in proximity" value={'100 m'} style={{ width: '90%' }} onSelect={(val) => updateSetting('notifications', 'object_in_proximity', val)} options={['25 m', '50 m', '100 m', '200 m', 'Off']}/>
