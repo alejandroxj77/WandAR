@@ -13,6 +13,7 @@ import getProfileUseCase from '../useCases/getProfile';
 import signInUseCase from '../useCases/signInUser';
 import signOutUseCase from '../useCases/signOutUser';
 import signUpUseCase from '../useCases/signUpUser';
+import { useProfile } from './profileContext';
 
 type AuthenticationProviderProps = {
     children: ReactNode,
@@ -24,6 +25,7 @@ const AuthenticationContext = createContext({
     createUser: async ({ profile }: { profile: ProfileEntity }): Promise<boolean> => { return true; },
     login: async ({ email, password }: { email: string, password: string }): Promise<boolean> => { return true; },
     signOut: async (): Promise<void> => { },
+    updateLocalProfile: (newProfile: ProfileEntity) => { }
 });
 
 const authenticationRepository = new AuthenticationRepositoryImpl(new AuthenticationDataSourceImpl());
@@ -32,13 +34,31 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     const [profile, setProfile] = useState<ProfileEntity | null>(null);
     const [session, setSession] = useState<Session | null>(null);
     const { showLoader, hideLoader } = useLoader();
-
-    useEffect(() => {
-        if (profile != null) {
-            router.replace('/(tabs)/post-content')
+    const { refreshProfileSettings } = useProfile();
+    
+    const loadSettings = async () => {
+        try {
+            showLoader({text:''});
+            await refreshProfileSettings()
+        } catch (error) {
+             Toast.show({
+                type: 'error',
+                text1: 'Error',
+                text2: error?.toString(),
+            });
+            return false;
+        } finally {
+            hideLoader();
         }
-    }, [profile])
+    }
 
+    const goToHome = () => {
+        router.replace('/(tabs)/post-content')
+    }
+
+    function updateLocalProfile(newProfile: ProfileEntity) {
+        setProfile({...profile!, ...newProfile})
+    }
 
     useEffect(() => {
         supabase.auth.getSession().then(async ({ data: { session } }) => {
@@ -54,6 +74,8 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
                     });
 
                     setProfile(profileResult)
+                    await loadSettings();
+                    goToHome();
                 } finally {
                     hideLoader();
                 }
@@ -100,6 +122,8 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
                 });
 
                 setProfile(profileResult)
+                await loadSettings();
+                goToHome();
             }
 
             return profileSuccess;
@@ -129,6 +153,8 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
             });
 
             setProfile(profileResult)
+            await loadSettings();
+            goToHome();
 
             return true;
         } catch (error) {
@@ -142,8 +168,13 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     };
 
     const signOut = async (): Promise<void> => {
-        await signOutUseCase({ authenticationRepository });
-        setHeaderToken()
+        try {
+            showLoader({text: ''});
+            await signOutUseCase({ authenticationRepository });
+            setHeaderToken();
+        } finally {
+            hideLoader();
+        }
     };
 
     const authValue = useMemo(() => ({
@@ -152,6 +183,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
         createUser,
         login,
         signOut,
+        updateLocalProfile,
     }), [session, profile]);
 
     return (

@@ -7,9 +7,11 @@ import 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 
 import { AuthenticationProvider } from '@/domain/contexts/authenticationContext';
+import { ProfileProvider } from '@/domain/contexts/profileContext';
 import { useColorScheme } from '@/domain/hooks/use-color-scheme';
 import { PantonFonts } from '@/shared/constants/fonts';
 import { LoaderProvider } from '@/shared/context/loaderContext';
+import { ModalProvider } from '@/shared/context/modalContext';
 import { KeyboardAvoidingView, Platform } from 'react-native';
 
 // Prevent the splash screen from auto-hiding before fonts are loaded
@@ -37,19 +39,23 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <LoaderProvider>
-        <AuthenticationProvider>
-          <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
-          >
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="authentication" options={{ headerShown: false }} />
-            </Stack>
-          </KeyboardAvoidingView>
-        </AuthenticationProvider>
-      </LoaderProvider>
+      <ModalProvider>
+        <LoaderProvider>
+          <AuthenticationProvider>
+            <ProfileProvider>
+              <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+              >
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="authentication" options={{ headerShown: false }} />
+                </Stack>
+              </KeyboardAvoidingView>
+            </ProfileProvider>
+          </AuthenticationProvider>
+        </LoaderProvider>
+      </ModalProvider>
       <Toast />
     </ThemeProvider>
   );
