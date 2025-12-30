@@ -36,10 +36,10 @@ export default function SignUp() {
             }
             await createUser({ profile: {
                 ...data, 
-                location_latitude: coor.latitude,
-                location_longitude: coor.longitude,
-                location_access_granted: location.granted,
-                camera_access_granted: camera.granted,
+                locationLatitude: coor.latitude,
+                locationLongitude: coor.longitude,
+                locationAccessGranted: location.granted,
+                cameraAccessGranted: camera.granted,
             } });
         } finally {
             hideLoader();

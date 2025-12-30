@@ -20,7 +20,7 @@ const ProfileAvatar = ({onPress}: {onPress?(): Promise<void> | null}) => {
       >
         <View style={styles.orangeCircle}>
           <Image
-            source={{ uri: profile?.avatar_image_url ?? 'https://i.pravatar.cc/300' }}
+            source={{ uri: profile?.avatarImageUrl ?? 'https://i.pravatar.cc/300' }}
             style={styles.image}
           />
         </View>

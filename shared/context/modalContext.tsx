@@ -1,5 +1,6 @@
+import LinearGradientBackground from '@/presentation/atoms/shared/LinearGradientBackground';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { Modal, Pressable, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Modal, Pressable, StyleSheet } from 'react-native';
 
 interface ModalOptions {
   content: ReactNode;
@@ -37,6 +38,7 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         visible={visible}
         animationType="fade"
         onRequestClose={hideModal}
+        style={{zIndex:2}}
       >
         {
             options?.fullScreen == true
@@ -45,11 +47,11 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                     style={styles.overlay} 
                     onPress={() => options?.dismissible !== false && hideModal()}
                 >
-                <TouchableWithoutFeedback>
-                    <View style={styles.contentContainer}>
-                    {options?.content}
-                    </View>
-                </TouchableWithoutFeedback>
+                <Pressable onPress={(e) => e.stopPropagation()}> 
+                  <LinearGradientBackground style={styles.contentContainer}>
+                      {options?.content}
+                  </LinearGradientBackground>
+              </Pressable>
             </Pressable>
         }
       </Modal>
@@ -71,8 +73,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '85%',
+    height: 400,
+    flex: undefined,
+    borderRadius: 25,
+    backgroundColor: 'red'
   },
 });

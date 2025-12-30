@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
+        zIndex: 99999
     },
     lottie: {
         width: 300,

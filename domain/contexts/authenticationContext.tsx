@@ -63,6 +63,8 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     useEffect(() => {
         supabase.auth.getSession().then(async ({ data: { session } }) => {
 
+            console.log(session)
+
             setSession(session);
 
             if (session) {
@@ -112,7 +114,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
             setSession(session);
             setHeaderToken(session)
             const profileSuccess = await createProfileUseCase({
-                profile: { ...profile, supabase_user_id: user.id },
+                profile: { ...profile, supabaseUserId: user.id },
                 authenticationRepository,
             });
 

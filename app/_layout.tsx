@@ -39,8 +39,8 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <ModalProvider>
-        <LoaderProvider>
+      <LoaderProvider>
+        <ModalProvider>
           <AuthenticationProvider>
             <ProfileProvider>
               <KeyboardAvoidingView
@@ -54,8 +54,8 @@ export default function RootLayout() {
               </KeyboardAvoidingView>
             </ProfileProvider>
           </AuthenticationProvider>
-        </LoaderProvider>
-      </ModalProvider>
+        </ModalProvider>
+      </LoaderProvider>
       <Toast />
     </ThemeProvider>
   );

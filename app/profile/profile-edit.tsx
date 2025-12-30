@@ -1,4 +1,5 @@
 import { useAuthentication } from '@/domain/contexts/authenticationContext';
+import { useProfile } from '@/domain/contexts/profileContext';
 import BackButton from '@/presentation/atoms/buttons/BackButton';
 import PrimaryButton from '@/presentation/atoms/buttons/PrimaryButton';
 import DynamicBackground from '@/presentation/atoms/DynamicBackground';
@@ -17,15 +18,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function ProfileEdit() {
     const insets = useSafeAreaInsets();
     const { profile, updateLocalProfile } = useAuthentication();
+    const { updateAvatarProfile } = useProfile();
 
     return <LinearGradientBackground>
         <View style={{flex: 1}}>
             <DynamicBackground backgroundColor='#f57c00' style={{justifyContent: 'space-evenly', height: '35%', paddingTop: insets.top, alignItems: 'center'}}>
-                <Label style={{fontSize: 22}}>{'[WandARer009]'}</Label>
+                <Label style={{fontSize: 22}}>{profile!.username}</Label>
                 <ProfileAvatar onPress={async ()=>{
                     const uri = await pickImage();
                     if(uri != null) {
-                        updateLocalProfile({...profile!, avatar_image_url: uri});
+                        await updateAvatarProfile({filepath: uri});
+                        // updateLocalProfile({...profile!, avatar_image_url: uri});
                     }
                 }}/>
                 <View style={{flexDirection: 'row', width: '100%', justifyContent: 'space-around'}}>
