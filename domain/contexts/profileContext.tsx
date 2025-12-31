@@ -83,7 +83,6 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
 
     const updateCredentials = async ({newPassword}: {newPassword:string}): Promise<void> => {
         try {
-            console.log('AAAAA')
             await UpdateCredentialsUseCase({
                 newPassword,
                 profileRepository,

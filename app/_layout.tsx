@@ -40,21 +40,21 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <LoaderProvider>
-        <ModalProvider>
-          <AuthenticationProvider>
-            <ProfileProvider>
-              <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
-              >
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="authentication" options={{ headerShown: false }} />
-                </Stack>
-              </KeyboardAvoidingView>
-            </ProfileProvider>
-          </AuthenticationProvider>
-        </ModalProvider>
+        <AuthenticationProvider>
+          <ModalProvider>
+              <ProfileProvider>
+                <KeyboardAvoidingView
+                  style={{ flex: 1 }}
+                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+                >
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="authentication" options={{ headerShown: false }} />
+                  </Stack>
+                </KeyboardAvoidingView>
+              </ProfileProvider>
+          </ModalProvider>
+        </AuthenticationProvider>
       </LoaderProvider>
       <Toast />
     </ThemeProvider>

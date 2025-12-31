@@ -107,7 +107,7 @@ const ChangePasswordModal = ({onClose, onSubmit}: {onClose(): void, onSubmit(pas
 
             <PrimaryButton label='Change' labelStyle={{fontSize: 18, paddingHorizontal: 80}} onPress={handleSubmit(({password})=>onSubmit(password))}/>
 
-            <TextButton label='Cancel' onPress={()=>{onClose}} styles={{textDecorationLine: 'underline', fontSize: 18}}/>
+            <TextButton label='Cancel' onPress={onClose} styles={{textDecorationLine: 'underline', fontSize: 18}}/>
         </View>
     );
 };

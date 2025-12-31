@@ -4,7 +4,7 @@ import { AuthenticationRepositoryImpl } from '@/data/repositories/authentication
 import httpClient from '@/shared/clients/httpClient';
 import { supabase } from '@/shared/clients/supabase';
 import { useLoader } from '@/shared/context/loaderContext';
-import { Session } from '@supabase/supabase-js';
+import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { router } from 'expo-router';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import Toast from 'react-native-toast-message';
@@ -33,6 +33,7 @@ const authenticationRepository = new AuthenticationRepositoryImpl(new Authentica
 export const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
     const [profile, setProfile] = useState<ProfileEntity | null>(null);
     const [session, setSession] = useState<Session | null>(null);
+    const [lastSessionState, setLastSessionState] = useState<AuthChangeEvent | null>(null);
     const { showLoader, hideLoader } = useLoader();
     const { refreshProfileSettings } = useProfile();
     
@@ -63,8 +64,6 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     useEffect(() => {
         supabase.auth.getSession().then(async ({ data: { session } }) => {
 
-            console.log(session)
-
             setSession(session);
 
             if (session) {
@@ -82,13 +81,16 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
                     hideLoader();
                 }
             } else {
-                router.replace('/authentication/Login');
+                router.dismissTo('/authentication/Login')
             }
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            if (_event == 'SIGNED_OUT') {
-                router.replace('/authentication/Login')
+            console.log(_event)
+            setLastSessionState(_event);
+            if (_event != 'SIGNED_IN' && _event != 'INITIAL_SESSION') {
+                setHeaderToken();
+                router.dismissTo('/authentication/Login')
             }
         });
 
@@ -170,6 +172,14 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     };
 
     const signOut = async (): Promise<void> => {
+        console.log('lastSessionState')
+        console.log(lastSessionState)
+        // if(lastSessionState != 'SIGNED_IN') {
+        //     setHeaderToken();
+        //     router.dismissAll();
+        //     router.replace('/authentication/Login');
+        //     return;
+        // }
         try {
             showLoader({text: ''});
             await signOutUseCase({ authenticationRepository });

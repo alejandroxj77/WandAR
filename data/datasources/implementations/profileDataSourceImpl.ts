@@ -108,21 +108,17 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
 
     async patchCredentials(newPassword: string): Promise<any> {
         try {
-            console.log('newPassword')
-            console.log(newPassword)
             let response = await httpClient.patch(
                 `v1/profile/credentials`,
                 {
                     password: newPassword,
                 },
             );
-            console.log(response)
             if(response.status >= 400) {
                 throw new Error(response?.data?.message ?? "Unexpected error");
             }
-            return mapToProfileEntity(response?.data?.profile);
+            return true;
         } catch (error) {
-            console.log(error)
             throw error;
         }
     }

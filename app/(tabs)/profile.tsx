@@ -42,8 +42,11 @@ const settings = () => {
                                     try {
                                         showLoader({text: ''});
                                         await updateCredentials({newPassword: password});
-                                        hideModal();
+                                        requestAnimationFrame(async () => {
+                                            await signOut()
+                                        })
                                     } finally {
+                                        hideModal();
                                         hideLoader();
                                     }
                                 }}
