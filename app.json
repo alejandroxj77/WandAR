@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "WandAR",
-    "slug": "WandAR",
+    "slug": "wandar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -78,6 +78,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "310d1f8f-2a7e-408f-b67a-8b15799f7139"
+      }
+    },
+    "owner": "seeker-xj77"
   }
 }
