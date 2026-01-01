@@ -2,7 +2,7 @@ import { DEFAULT_PROFILE_SETTINGS, ProfileSettingsEntity } from '@/data/datasour
 import { ProfileDataSourceImpl } from '@/data/datasources/implementations/profileDataSourceImpl';
 import { ProfileRepositoryImpl } from '@/data/repositories/profileRepositoryImpl';
 import { useLoader } from '@/shared/context/loaderContext';
-import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 import getProfileSettingsUseCase from '../useCases/getProfileSettings';
 import postProfileSettingsUseCase from '../useCases/postProfileSettings';
 import updateAvatarUseCase from '../useCases/updateAvatar';
@@ -33,10 +33,6 @@ const profileRepository = new ProfileRepositoryImpl(new ProfileDataSourceImpl())
 export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     const [profileSettings, setProfileSettings] = useState<ProfileSettingsEntity>(DEFAULT_PROFILE_SETTINGS);
     const { showLoader, hideLoader } = useLoader();
-
-    useEffect(() => {
-        refreshProfileSettings();
-    }, []);
 
     const refreshProfileSettings = async () => {
         try {

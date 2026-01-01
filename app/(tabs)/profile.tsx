@@ -10,7 +10,6 @@ import WandARInfoScreen from "@/presentation/molecules/AboutWandAr";
 import { ColumnLabelsInfo } from "@/presentation/molecules/ColumnLabelsInfo";
 import ProfileAvatar from "@/presentation/molecules/ProfileAvatar";
 import UserListItem from "@/presentation/molecules/UserListItem";
-import { useLoader } from "@/shared/context/loaderContext";
 import { useModal } from "@/shared/context/modalContext";
 import ChangePasswordModal from "@/shared/ui/modals/ChangePassword";
 import WandARPro from "@/shared/ui/modals/WandARPro";
@@ -22,8 +21,7 @@ import { NavigationState, SceneMap, SceneRendererProps, TabDescriptor, TabView }
 const settings = () => {
     const { profile, signOut } = useAuthentication();
     const { profileSettings, updateSetting, updateCredentials } = useProfile();
-    const { showModal, hideModal } = useModal();
-    const { showLoader, hideLoader } = useLoader();
+    const { showModal } = useModal();
     return (
         <View style={{
             alignItems: 'center',
@@ -35,23 +33,17 @@ const settings = () => {
                 <View style={{ gap: 25, alignItems: 'center' }}>
                     <View />
                     <PrimaryButton label="Change Account Passaword" labelStyle={{ fontSize: 18 }} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={async () => { 
-                        showModal({
-                            content: <ChangePasswordModal 
-                                onClose={hideModal}
-                                onSubmit={async (password)=>{
-                                    try {
-                                        showLoader({text: ''});
-                                        await updateCredentials({newPassword: password});
-                                        requestAnimationFrame(async () => {
-                                            await signOut()
-                                        })
-                                    } finally {
-                                        hideModal();
-                                        hideLoader();
-                                    }
-                                }}
-                            />
+                        const content = <ChangePasswordModal 
+                            onSubmit={async (password)=>{
+                                await updateCredentials({newPassword: password});
+                            }}
+                        />;
+                        const result = await showModal({
+                            content
                         });
+                        if(result){
+                            await signOut()
+                        }
                     }} />
                     <PrimaryButton label="Change Account Username" labelStyle={{ fontSize: 18 }} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={() => { } } />
                     <View style={{ width: '95%', height: 2, backgroundColor: '#0097D3', opacity: .2 }} />

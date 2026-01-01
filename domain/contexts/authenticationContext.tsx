@@ -4,7 +4,8 @@ import { AuthenticationRepositoryImpl } from '@/data/repositories/authentication
 import httpClient from '@/shared/clients/httpClient';
 import { supabase } from '@/shared/clients/supabase';
 import { useLoader } from '@/shared/context/loaderContext';
-import { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import { useModal } from '@/shared/context/modalContext';
+import { Session } from '@supabase/supabase-js';
 import { router } from 'expo-router';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 import Toast from 'react-native-toast-message';
@@ -25,7 +26,7 @@ const AuthenticationContext = createContext({
     createUser: async ({ profile }: { profile: ProfileEntity }): Promise<boolean> => { return true; },
     login: async ({ email, password }: { email: string, password: string }): Promise<boolean> => { return true; },
     signOut: async (): Promise<void> => { },
-    updateLocalProfile: (newProfile: ProfileEntity) => { }
+    updateLocalProfile: (newProfile: ProfileEntity) => { },
 });
 
 const authenticationRepository = new AuthenticationRepositoryImpl(new AuthenticationDataSourceImpl());
@@ -33,9 +34,9 @@ const authenticationRepository = new AuthenticationRepositoryImpl(new Authentica
 export const AuthenticationProvider = ({ children }: AuthenticationProviderProps) => {
     const [profile, setProfile] = useState<ProfileEntity | null>(null);
     const [session, setSession] = useState<Session | null>(null);
-    const [lastSessionState, setLastSessionState] = useState<AuthChangeEvent | null>(null);
     const { showLoader, hideLoader } = useLoader();
     const { refreshProfileSettings } = useProfile();
+    const { hideModal } = useModal();
     
     const loadSettings = async () => {
         try {
@@ -86,9 +87,9 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            console.log(_event)
-            setLastSessionState(_event);
             if (_event != 'SIGNED_IN' && _event != 'INITIAL_SESSION') {
+                hideLoader();
+                hideModal();
                 setHeaderToken();
                 router.dismissTo('/authentication/Login')
             }
@@ -172,14 +173,6 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     };
 
     const signOut = async (): Promise<void> => {
-        console.log('lastSessionState')
-        console.log(lastSessionState)
-        // if(lastSessionState != 'SIGNED_IN') {
-        //     setHeaderToken();
-        //     router.dismissAll();
-        //     router.replace('/authentication/Login');
-        //     return;
-        // }
         try {
             showLoader({text: ''});
             await signOutUseCase({ authenticationRepository });

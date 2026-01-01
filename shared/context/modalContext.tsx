@@ -3,14 +3,14 @@ import React, { createContext, ReactNode, useContext, useState } from 'react';
 import { Modal, Pressable, StyleSheet } from 'react-native';
 
 interface ModalOptions {
-  content: ReactNode;
+  content: React.JSX.Element;
   dismissible?: boolean;
   fullScreen?: boolean;
 }
 
 type ModalContextType = {
-  showModal: (options: ModalOptions) => void;
-  hideModal: () => void;
+  showModal: (options: ModalOptions) => Promise<boolean>;
+  hideModal: (result?: boolean) => void;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -18,15 +18,28 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState<ModalOptions | null>(null);
+  const [resolver, setResolver] = useState<((value: boolean) => void) | null>(null);
 
-  const showModal = (opts: ModalOptions) => {
+  const showModal = async (opts: ModalOptions): Promise<boolean> => {
     setOptions(opts);
     setVisible(true);
+
+    return new Promise((resolve) => {
+      setResolver(() => resolve);
+    });
   };
 
-  const hideModal = () => {
+  const hideModal = (result: any = false) => {
     setVisible(false);
     setOptions(null);
+    if (resolver) {
+      if(typeof result != 'boolean') {
+        resolver(false);
+      } else {
+        resolver(result);
+      }
+      setResolver(null);
+    }
   };
 
   return (
@@ -38,7 +51,6 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         visible={visible}
         animationType="fade"
         onRequestClose={hideModal}
-        style={{zIndex:2}}
       >
         {
             options?.fullScreen == true

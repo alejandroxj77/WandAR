@@ -2,11 +2,13 @@ import PrimaryButton from '@/presentation/atoms/buttons/PrimaryButton';
 import TextButton from '@/presentation/atoms/buttons/TextButton';
 import Label from '@/presentation/atoms/Label';
 import { InputIconMolecule } from '@/presentation/molecules/InputIcon';
+import { useLoader } from '@/shared/context/loaderContext';
+import { useModal } from '@/shared/context/modalContext';
 import React from 'react';
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from 'react-native';
 
-const ChangePasswordModal = ({onClose, onSubmit}: {onClose(): void, onSubmit(password: string): void}) => {
+const ChangePasswordModal = ({onSubmit}: {onSubmit(password: string): Promise<void>}) => {
     const {control, handleSubmit, formState: { errors }, watch} = useForm({
         defaultValues: {
             password: '',
@@ -14,6 +16,8 @@ const ChangePasswordModal = ({onClose, onSubmit}: {onClose(): void, onSubmit(pas
             rerepassword: '',
         }
     });
+    const { hideModal } = useModal();
+    const { showLoader, hideLoader } = useLoader();
 
     const passwordValue = watch("password");
     return (
@@ -105,9 +109,19 @@ const ChangePasswordModal = ({onClose, onSubmit}: {onClose(): void, onSubmit(pas
                 }}
             />
 
-            <PrimaryButton label='Change' labelStyle={{fontSize: 18, paddingHorizontal: 80}} onPress={handleSubmit(({password})=>onSubmit(password))}/>
+            <PrimaryButton label='Change' labelStyle={{fontSize: 18, paddingHorizontal: 80}} onPress={handleSubmit(async ({password})=>{
+                try {
+                    showLoader({text: ''});
+                    await onSubmit(password);
+                    hideModal(true);
+                } catch (error) {
+                    hideModal(false);
+                } finally {
+                    hideLoader();
+                }
+            })}/>
 
-            <TextButton label='Cancel' onPress={onClose} styles={{textDecorationLine: 'underline', fontSize: 18}}/>
+            <TextButton label='Cancel' onPress={hideModal} styles={{textDecorationLine: 'underline', fontSize: 18}}/>
         </View>
     );
 };

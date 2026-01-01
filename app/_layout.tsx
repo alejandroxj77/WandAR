@@ -17,10 +17,6 @@ import { KeyboardAvoidingView, Platform } from 'react-native';
 // Prevent the splash screen from auto-hiding before fonts are loaded
 SplashScreen.preventAutoHideAsync();
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
-
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [fontsLoaded, fontError] = useFonts(PantonFonts);
@@ -40,21 +36,21 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <LoaderProvider>
-        <AuthenticationProvider>
-          <ModalProvider>
+        <ModalProvider>
+          <AuthenticationProvider>
               <ProfileProvider>
                 <KeyboardAvoidingView
                   style={{ flex: 1 }}
                   behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                   keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
                 >
-                  <Stack screenOptions={{ headerShown: false }}>
+                  <Stack screenOptions={{ headerShown: false }} initialRouteName='authentication'>
                     <Stack.Screen name="authentication" options={{ headerShown: false }} />
                   </Stack>
                 </KeyboardAvoidingView>
               </ProfileProvider>
-          </ModalProvider>
-        </AuthenticationProvider>
+          </AuthenticationProvider>
+        </ModalProvider>
       </LoaderProvider>
       <Toast />
     </ThemeProvider>

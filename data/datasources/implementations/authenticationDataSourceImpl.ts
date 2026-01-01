@@ -69,7 +69,10 @@ export class AuthenticationDataSourceImpl implements authenticationDataSource {
 
     async signOutUser(): Promise<void> {
         try {
-            await supabase.auth.signOut();
+            const { error } = await supabase.auth.signOut();
+            if(error != null) {
+                await supabase.auth.refreshSession();
+            }
         } catch (error) {
             throw error;
         }
