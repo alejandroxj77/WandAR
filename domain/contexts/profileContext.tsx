@@ -62,7 +62,7 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
             await postProfileSettingsUseCase({profileSettings: newSettings, profileRepository})
             setProfileSettings(newSettings);
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     };
 

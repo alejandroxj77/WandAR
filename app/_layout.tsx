@@ -37,19 +37,19 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <LoaderProvider>
         <ModalProvider>
-          <AuthenticationProvider>
-              <ProfileProvider>
-                <KeyboardAvoidingView
-                  style={{ flex: 1 }}
-                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                  keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
-                >
-                  <Stack screenOptions={{ headerShown: false }} initialRouteName='authentication'>
-                    <Stack.Screen name="authentication" options={{ headerShown: false }} />
-                  </Stack>
-                </KeyboardAvoidingView>
-              </ProfileProvider>
-          </AuthenticationProvider>
+          <ProfileProvider>
+            <AuthenticationProvider>
+              <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+              >
+                <Stack screenOptions={{ headerShown: false }} initialRouteName='authentication'>
+                  <Stack.Screen name="authentication" options={{ headerShown: false }} />
+                </Stack>
+              </KeyboardAvoidingView>
+            </AuthenticationProvider>
+          </ProfileProvider>
         </ModalProvider>
       </LoaderProvider>
       <Toast />

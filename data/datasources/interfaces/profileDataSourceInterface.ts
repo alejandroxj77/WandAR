@@ -4,7 +4,7 @@ import { PresignedUrlEntity } from "../entities/presignedUrlEntity";
 
 export default interface ProfileDataSource {
     getProfileSettings(): Promise<ProfileSettingsEntity>;
-    postProfileSettings(profileSettings: ProfileSettingsEntity): Promise<ProfileSettingsEntity>;
+    patchProfileSettings(profileSettings: Partial<ProfileSettingsEntity>): Promise<ProfileSettingsEntity>;
     postPresignedUrl(): Promise<PresignedUrlEntity>;
     ejecPresignedUrl(url: string, fileWrap: string): Promise<any>;
     patchProfile(profile: Partial<ProfileEntity>): Promise<ProfileEntity>;

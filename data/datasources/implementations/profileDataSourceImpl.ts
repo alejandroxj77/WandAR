@@ -7,56 +7,34 @@ import ProfileDataSource from "../interfaces/profileDataSourceInterface";
 
 export class ProfileDataSourceImpl implements ProfileDataSource {
     async getProfileSettings(): Promise<ProfileSettingsEntity> {
-        try {
-
-            return mapToProfileSettingsEntity(`
-                {
-                    "settings": {
-                        "updates": {
-                            "automaticUpdates": false
-                        },
-                        "notifications": {
-                            "objectInProximity": "100 m",
-                            "previouslyViewedObjectInProximity": "off",
-                            "friendsRequest": false,
-                            "followedByNewUser": false,
-                            "friendFollowedUserPosts": false,
-                            "postAboutToExpire": "1 day remaining",
-                            "postTimedOut": false,
-                            "friendPostAboutToExpire": "1 day remaining",
-                            "postHasBeenReported": false,
-                            "messageFromFriend": false,
-                            "newFeaturesAvailable": false,
-                            "objectViewed": "10 times",
-                            "objectSold": false
-                        },
-                        "home_screen_tools": {
-                            "hideButtons": false,
-                            "publicPrivateMode": false,
-                            "textEnabled": false,
-                            "pencilEnabled": false,
-                            "shapesEnabled": false,
-                            "cameraRollEnabled": false,
-                            "audioEnabled": false,
-                            "uploadEnabled": false,
-                            "cameraOff": false,
-                            "switchCamera": false,
-                            "cameraFlash": false
-                        },
-                        "mode": {
-                            "colorMode": false,
-                            "map": "day"
-                        }
-                    }
-                }
-            `);
+         try {
+            let response = await httpClient.get(
+                `v1/settings`,
+            );
+            if(response.status >= 400) {
+                throw new Error(response?.data?.message ?? "Unexpected error");
+            }
+            return mapToProfileSettingsEntity(response?.data);
         } catch (error) {
             throw error;
         }
     }
 
-    async postProfileSettings(profileSettings: ProfileSettingsEntity): Promise<ProfileSettingsEntity> {
-        return profileSettings;
+    async patchProfileSettings(profileSettings: Partial<ProfileSettingsEntity>): Promise<ProfileSettingsEntity> {
+        try {
+            console.log('PATCH')
+            console.log(profileSettings)
+            let response = await httpClient.patch(
+                `v1/settings`,
+                profileSettings,
+            );
+            if(response.status >= 400) {
+                throw new Error(response?.data?.message ?? "Unexpected error");
+            }
+            return mapToProfileSettingsEntity(response?.data?.settings);
+        } catch (error) {
+            throw error;
+        }
     }
 
     async postPresignedUrl(): Promise<PresignedUrlEntity> {

@@ -30,9 +30,9 @@ const settings = () => {
             <Label style={{ fontSize: 18, paddingTop: 15, paddingBottom: 15 }}>{profile?.email}</Label>
             <View style={{ width: '95%', height: 2, backgroundColor: '#0097D3', opacity: .2 }} />
             <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
-                <View style={{ gap: 25, alignItems: 'center' }}>
+                <View style={{ gap: 15, alignItems: 'center' }}>
                     <View />
-                    <PrimaryButton label="Change Account Passaword" labelStyle={{ fontSize: 18 }} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={async () => { 
+                    <PrimaryButton label="Change Account Passaword" labelStyle={{ fontSize: 14 }} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={async () => { 
                         const content = <ChangePasswordModal 
                             onSubmit={async (password)=>{
                                 await updateCredentials({newPassword: password});
@@ -45,11 +45,11 @@ const settings = () => {
                             await signOut()
                         }
                     }} />
-                    <PrimaryButton label="Change Account Username" labelStyle={{ fontSize: 18 }} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={() => { } } />
+                    <PrimaryButton label="Change Account Username" labelStyle={{ fontSize: 14 }} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={() => { } } />
                     <View style={{ width: '95%', height: 2, backgroundColor: '#0097D3', opacity: .2 }} />
                     <Label style={{ fontSize: 20 }}>{'Updates'}</Label>
                     <SettingsSwitch label="Automatic Updates" onValueChange={(val) => updateSetting('updates', 'automaticUpdates', val)} value={profileSettings.updates.automaticUpdates} style={{ width: '90%' }} />
-                    <PrimaryButton label="Check For Updates" labelStyle={{ fontSize: 18 }} disabled={profileSettings.updates.automaticUpdates} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={() => { } } />
+                    <PrimaryButton label="Check For Updates" labelStyle={{ fontSize: 14 }} disabled={profileSettings.updates.automaticUpdates} styles={{ paddingVertical: 13, paddingHorizontal: 35, width: '85%' }} onPress={() => { } } />
                     <View style={{ width: '95%', height: 2, backgroundColor: '#0097D3', opacity: .2 }} />
                     <Label style={{ fontSize: 20 }}>{'Notifications'}</Label>
                     <SettingsDropdown label="Object in proximity" value={'100 m'} style={{ width: '90%' }} onSelect={(val) => updateSetting('notifications', 'objectInProximity', val)} options={['25 m', '50 m', '100 m', '200 m', 'Off']}/>
@@ -172,8 +172,8 @@ export default function Profile() {
                     {
                         navigationState.routes.map((tab, index) => {
                             const isFocused = navigationState.index === index;
-                            let styleButtom = [style.tabsButtom, isFocused && {backgroundColor: '#ffffff'}];
-                            let styleLabel = [style.tabsLabel, isFocused && {color: '#0097d3'}];
+                            let styleButtom = [style.tabsButtom, !isFocused && {backgroundColor: '#ffffff'}];
+                            let styleLabel = [style.tabsLabel, !isFocused && {color: '#0097d3'}];
                             return <PrimaryButton key={tab.key} label={tab.title} styles={styleButtom} labelStyle={styleLabel} onPress={() => {
                                 jumpTo(tab.key);
                             }}/>;
@@ -214,7 +214,7 @@ export default function Profile() {
                 <Label style={{fontSize: 22}}>{profile?.username}</Label>
                 <PrimaryButton 
                     label="WandAR Pro" 
-                    labelStyle={{fontSize: 18}} 
+                    labelStyle={{fontSize: 19}} 
                     styles={{backgroundColor: 'red', paddingVertical:10, paddingHorizontal: 35}} 
                     onPress={()=>{
                         showModal({

@@ -18,9 +18,9 @@ export class ProfileRepositoryImpl implements ProfileRepository {
         }
     }
 
-    async postProfileSettings(profileSettings: ProfileSettingsEntity): Promise<ProfileSettingsEntity> {
+    async patchProfileSettings(profileSettings: Partial<ProfileSettingsEntity>): Promise<ProfileSettingsEntity> {
         try {
-            return await this.dataSource.postProfileSettings(profileSettings);
+            return await this.dataSource.patchProfileSettings(profileSettings);
         } catch (error) {
             throw error;
         }
