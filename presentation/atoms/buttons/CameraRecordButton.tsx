@@ -1,11 +1,13 @@
 import { Colors } from "@/shared/constants/theme";
 import { StyleSheet, View } from "react-native";
+import Home from "../icons/home";
 
 export default function CameraRecordButton() {
 
     return (
         <View style={styles.container}>
             <View style={styles.innerContainer}>
+                <Home/>
             </View>
         </View>
     );
@@ -26,6 +28,8 @@ const styles = StyleSheet.create({
         height: 60,
         backgroundColor: Colors.dark.white,
         borderColor: Colors.dark.primaryColor,
+        justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 50,
         borderWidth: 3,
     },
