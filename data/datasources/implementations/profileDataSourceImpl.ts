@@ -14,7 +14,7 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
             if(response.status >= 400) {
                 throw new Error(response?.data?.message ?? "Unexpected error");
             }
-            return mapToProfileSettingsEntity(response?.data);
+            return mapToProfileSettingsEntity(response?.data?.settings);
         } catch (error) {
             throw error;
         }
@@ -22,11 +22,15 @@ export class ProfileDataSourceImpl implements ProfileDataSource {
 
     async patchProfileSettings(profileSettings: Partial<ProfileSettingsEntity>): Promise<ProfileSettingsEntity> {
         try {
-            console.log('PATCH')
-            console.log(profileSettings)
+            const payload = {
+                ...profileSettings.updates,
+                ...profileSettings.notifications,
+                ...profileSettings.homeScreenTools,
+                ...profileSettings.mode,
+            };
             let response = await httpClient.patch(
                 `v1/settings`,
-                profileSettings,
+                payload,
             );
             if(response.status >= 400) {
                 throw new Error(response?.data?.message ?? "Unexpected error");
