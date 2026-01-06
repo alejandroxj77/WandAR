@@ -19,7 +19,7 @@ const SettingsCustom = ({value, onValueChange}: { value: boolean, onValueChange:
 
   const translateX = moveAnim.interpolate({
     inputRange: [0, 1],
-    outputRange: [4, 24],
+    outputRange: [4, 30],
   });
 
   return (
@@ -46,19 +46,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
   },
   track: {
-    width: 55,
-    height: 32,
-    borderRadius: 16,
+    width: 65,
+    height: 38,
+    borderRadius: 25,
     justifyContent: 'center',
-    paddingHorizontal: 2,
   },
   thumb: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+    width: 30,
+    height: 30,
+    borderRadius: 25,
     elevation: 2,
   },
 });

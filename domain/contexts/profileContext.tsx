@@ -2,9 +2,11 @@ import { DEFAULT_PROFILE_SETTINGS, ProfileSettingsEntity } from '@/data/datasour
 import { ProfileDataSourceImpl } from '@/data/datasources/implementations/profileDataSourceImpl';
 import { ProfileRepositoryImpl } from '@/data/repositories/profileRepositoryImpl';
 import { useLoader } from '@/shared/context/loaderContext';
-import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, ReactNode, useContext, useMemo, useState } from 'react';
 import getProfileSettingsUseCase from '../useCases/getProfileSettings';
 import postProfileSettingsUseCase from '../useCases/postProfileSettings';
+import updateAvatarUseCase from '../useCases/updateAvatar';
+import UpdateCredentialsUseCase from '../useCases/updateCredentials';
 
 type ProfileProviderProps = {
     children: ReactNode,
@@ -18,6 +20,12 @@ const ProfileContext = createContext({
         value: ProfileSettingsEntity[K][S]
     ): Promise<void> => { },
     refreshProfileSettings: async () => { },
+    updateAvatarProfile: async ({ filepath }: {
+        filepath: string;
+    }): Promise<void> => {},
+    updateCredentials: async ({ newPassword }: {
+        newPassword: string;
+    }): Promise<void> => {}
 });
 
 const profileRepository = new ProfileRepositoryImpl(new ProfileDataSourceImpl());
@@ -25,10 +33,6 @@ const profileRepository = new ProfileRepositoryImpl(new ProfileDataSourceImpl())
 export const ProfileProvider = ({ children }: ProfileProviderProps) => {
     const [profileSettings, setProfileSettings] = useState<ProfileSettingsEntity>(DEFAULT_PROFILE_SETTINGS);
     const { showLoader, hideLoader } = useLoader();
-
-    useEffect(() => {
-        refreshProfileSettings();
-    }, []);
 
     const refreshProfileSettings = async () => {
         try {
@@ -58,14 +62,38 @@ export const ProfileProvider = ({ children }: ProfileProviderProps) => {
             await postProfileSettingsUseCase({profileSettings: newSettings, profileRepository})
             setProfileSettings(newSettings);
         } catch (error) {
-            console.error(error);
+            throw error;
         }
     };
+
+    const updateAvatarProfile = async ({filepath}: {filepath:string}): Promise<void> => {
+        try {
+            await updateAvatarUseCase({
+                filePath: filepath,
+                profileRepository,
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    const updateCredentials = async ({newPassword}: {newPassword:string}): Promise<void> => {
+        try {
+            await UpdateCredentialsUseCase({
+                newPassword,
+                profileRepository,
+            });
+        } catch (error) {
+            throw error;
+        }
+    }
 
     const profileValue = useMemo(() => ({
         profileSettings,
         updateSetting,
         refreshProfileSettings,
+        updateAvatarProfile,
+        updateCredentials,
     }), [profileSettings]);
 
     return (

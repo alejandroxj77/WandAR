@@ -1,15 +1,16 @@
+import LinearGradientBackground from '@/presentation/atoms/shared/LinearGradientBackground';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { Modal, Pressable, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Modal, Pressable, StyleSheet } from 'react-native';
 
 interface ModalOptions {
-  content: ReactNode;
+  content: React.JSX.Element;
   dismissible?: boolean;
   fullScreen?: boolean;
 }
 
 type ModalContextType = {
-  showModal: (options: ModalOptions) => void;
-  hideModal: () => void;
+  showModal: (options: ModalOptions) => Promise<boolean>;
+  hideModal: (result?: boolean) => void;
 };
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -17,15 +18,28 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined);
 export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [visible, setVisible] = useState(false);
   const [options, setOptions] = useState<ModalOptions | null>(null);
+  const [resolver, setResolver] = useState<((value: boolean) => void) | null>(null);
 
-  const showModal = (opts: ModalOptions) => {
+  const showModal = async (opts: ModalOptions): Promise<boolean> => {
     setOptions(opts);
     setVisible(true);
+
+    return new Promise((resolve) => {
+      setResolver(() => resolve);
+    });
   };
 
-  const hideModal = () => {
+  const hideModal = (result: any = false) => {
     setVisible(false);
     setOptions(null);
+    if (resolver) {
+      if(typeof result != 'boolean') {
+        resolver(false);
+      } else {
+        resolver(result);
+      }
+      setResolver(null);
+    }
   };
 
   return (
@@ -45,11 +59,11 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                     style={styles.overlay} 
                     onPress={() => options?.dismissible !== false && hideModal()}
                 >
-                <TouchableWithoutFeedback>
-                    <View style={styles.contentContainer}>
-                    {options?.content}
-                    </View>
-                </TouchableWithoutFeedback>
+                <Pressable onPress={(e) => e.stopPropagation()}> 
+                  <LinearGradientBackground style={styles.contentContainer}>
+                      {options?.content}
+                  </LinearGradientBackground>
+              </Pressable>
             </Pressable>
         }
       </Modal>
@@ -71,8 +85,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   contentContainer: {
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '85%',
+    height: 400,
+    flex: undefined,
+    borderRadius: 25,
+    backgroundColor: 'red'
   },
 });

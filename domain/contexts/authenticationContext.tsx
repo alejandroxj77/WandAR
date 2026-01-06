@@ -4,6 +4,7 @@ import { AuthenticationRepositoryImpl } from '@/data/repositories/authentication
 import httpClient from '@/shared/clients/httpClient';
 import { supabase } from '@/shared/clients/supabase';
 import { useLoader } from '@/shared/context/loaderContext';
+import { useModal } from '@/shared/context/modalContext';
 import { Session } from '@supabase/supabase-js';
 import { router } from 'expo-router';
 import React, { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
@@ -25,7 +26,7 @@ const AuthenticationContext = createContext({
     createUser: async ({ profile }: { profile: ProfileEntity }): Promise<boolean> => { return true; },
     login: async ({ email, password }: { email: string, password: string }): Promise<boolean> => { return true; },
     signOut: async (): Promise<void> => { },
-    updateLocalProfile: (newProfile: ProfileEntity) => { }
+    updateLocalProfile: (newProfile: ProfileEntity) => { },
 });
 
 const authenticationRepository = new AuthenticationRepositoryImpl(new AuthenticationDataSourceImpl());
@@ -35,6 +36,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
     const [session, setSession] = useState<Session | null>(null);
     const { showLoader, hideLoader } = useLoader();
     const { refreshProfileSettings } = useProfile();
+    const { hideModal } = useModal();
     
     const loadSettings = async () => {
         try {
@@ -80,13 +82,16 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
                     hideLoader();
                 }
             } else {
-                router.replace('/authentication/Login');
+                router.dismissTo('/authentication/Login')
             }
         });
 
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-            if (_event == 'SIGNED_OUT') {
-                router.replace('/authentication/Login')
+            if (_event != 'SIGNED_IN' && _event != 'INITIAL_SESSION') {
+                hideLoader();
+                hideModal();
+                setHeaderToken();
+                router.dismissTo('/authentication/Login')
             }
         });
 
@@ -112,7 +117,7 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
             setSession(session);
             setHeaderToken(session)
             const profileSuccess = await createProfileUseCase({
-                profile: { ...profile, supabase_user_id: user.id },
+                profile: { ...profile, supabaseUserId: user.id },
                 authenticationRepository,
             });
 

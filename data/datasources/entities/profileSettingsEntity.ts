@@ -1,37 +1,37 @@
 export type ProfileSettingsEntity = {
   updates: {
-    automatic_updates: boolean;
+    automaticUpdates: boolean;
   };
   notifications: {
-    object_in_proximity: string;
-    previously_viewed_object_in_proximity: string;
-    friends_request: boolean;
-    followed_by_new_user: boolean;
-    friend_followed_user_posts: boolean;
-    post_about_to_expire: string;
-    post_timed_out: boolean;
-    friend_post_about_to_expire: string;
-    post_has_been_reported: boolean;
-    message_from_friend: boolean;
-    new_features_available: boolean;
-    object_viewed: string;
-    object_sold: boolean;
+    objectInProximity: string;
+    previouslyViewedObjectInProximity: string;
+    friendsRequest: boolean;
+    followedByNewUser: boolean;
+    friendFollowedUserPosts: boolean;
+    postAboutToExpire: string;
+    postTimedOut: boolean;
+    friendPostAboutToExpire: string;
+    postHasBeenReported: boolean;
+    messageFromFriend: boolean;
+    newFeaturesAvailable: boolean;
+    objectViewed: string;
+    objectSold: boolean;
   };
-  home_screen_tools: {
-    hide_buttons: boolean;
-    public_private_mode: boolean;
-    text_enabled: boolean;
-    pencil_enabled: boolean;
-    shapes_enabled: boolean;
-    camera_roll_enabled: boolean;
-    audio_enabled: boolean;
-    upload_enabled: boolean;
-    camera_off: boolean;
-    switch_camera: boolean;
-    camera_flash: boolean;
+  homeScreenTools: {
+    hideButtons: boolean;
+    publicPrivateMode: boolean;
+    textEnabled: boolean;
+    pencilEnabled: boolean;
+    shapesEnabled: boolean;
+    cameraRollEnabled: boolean;
+    audioEnabled: boolean;
+    uploadEnabled: boolean;
+    cameraOff: boolean;
+    switchCamera: boolean;
+    cameraFlash: boolean;
   };
   mode: {
-    color_mode: boolean;
+    colorMode: boolean;
     map: string;
   };
 }
@@ -39,38 +39,38 @@ export type ProfileSettingsEntity = {
 export const mapToProfileSettingsEntity = (data: any): ProfileSettingsEntity => {
   return {
     updates: {
-      automatic_updates: Boolean(data.updates?.automaticUpdates ?? data.updates?.automatic_updates),
+      automaticUpdates: Boolean(data.updates?.automaticUpdates ?? data.updates?.automaticUpdates),
     },
     notifications: {
-      object_in_proximity: String(data.notifications?.objectInProximity ?? data.notifications?.object_in_proximity ?? ''),
-      previously_viewed_object_in_proximity: String(data.notifications?.previouslyViewedObjectInProximity ?? data.notifications?.previously_viewed_object_in_proximity ?? ''),
-      friends_request: Boolean(data.notifications?.friendsRequest ?? data.notifications?.friends_request),
-      followed_by_new_user: Boolean(data.notifications?.followedByNewUser ?? data.notifications?.followed_by_new_user),
-      friend_followed_user_posts: Boolean(data.notifications?.friendFollowedUserPosts ?? data.notifications?.friend_followed_user_posts),
-      post_about_to_expire: String(data.notifications?.postAboutToExpire ?? data.notifications?.post_about_to_expire ?? ''),
-      post_timed_out: Boolean(data.notifications?.postTimedOut ?? data.notifications?.post_timed_out),
-      friend_post_about_to_expire: String(data.notifications?.friendPostAboutToExpire ?? data.notifications?.friend_post_about_to_expire ?? ''),
-      post_has_been_reported: Boolean(data.notifications?.postHasBeenReported ?? data.notifications?.post_has_been_reported),
-      message_from_friend: Boolean(data.notifications?.messageFromFriend ?? data.notifications?.message_from_friend),
-      new_features_available: Boolean(data.notifications?.newFeaturesAvailable ?? data.notifications?.new_features_available),
-      object_viewed: String(data.notifications?.objectViewed ?? data.notifications?.object_viewed ?? ''),
-      object_sold: Boolean(data.notifications?.objectSold ?? data.notifications?.object_sold),
+      objectInProximity: String(data.notifications?.objectInProximity ?? data.notifications?.objectInProximity ?? ''),
+      previouslyViewedObjectInProximity: String(data.notifications?.previouslyViewedObjectInProximity ?? data.notifications?.previously_viewed_objectInProximity ?? ''),
+      friendsRequest: Boolean(data.notifications?.friendsRequest ?? data.notifications?.friends_request),
+      followedByNewUser: Boolean(data.notifications?.followedByNewUser ?? data.notifications?.followed_by_new_user),
+      friendFollowedUserPosts: Boolean(data.notifications?.friendFollowedUserPosts ?? data.notifications?.friend_followed_user_posts),
+      postAboutToExpire: String(data.notifications?.postAboutToExpire ?? data.notifications?.post_about_to_expire ?? ''),
+      postTimedOut: Boolean(data.notifications?.postTimedOut ?? data.notifications?.post_timed_out),
+      friendPostAboutToExpire: String(data.notifications?.friendPostAboutToExpire ?? data.notifications?.friend_post_about_to_expire ?? ''),
+      postHasBeenReported: Boolean(data.notifications?.postHasBeenReported ?? data.notifications?.post_has_been_reported),
+      messageFromFriend: Boolean(data.notifications?.messageFromFriend ?? data.notifications?.message_from_friend),
+      newFeaturesAvailable: Boolean(data.notifications?.newFeaturesAvailable ?? data.notifications?.new_features_available),
+      objectViewed: String(data.notifications?.objectViewed ?? data.notifications?.object_viewed ?? ''),
+      objectSold: Boolean(data.notifications?.objectSold ?? data.notifications?.object_sold),
     },
-    home_screen_tools: {
-      hide_buttons: Boolean(data.homeScreenTools?.hideButtons ?? data.home_screen_tools?.hide_buttons),
-      public_private_mode: Boolean(data.homeScreenTools?.publicPrivateMode ?? data.home_screen_tools?.public_private_mode),
-      text_enabled: Boolean(data.homeScreenTools?.textEnabled ?? data.home_screen_tools?.text_enabled),
-      pencil_enabled: Boolean(data.homeScreenTools?.pencilEnabled ?? data.home_screen_tools?.pencil_enabled),
-      shapes_enabled: Boolean(data.homeScreenTools?.shapesEnabled ?? data.home_screen_tools?.shapes_enabled),
-      camera_roll_enabled: Boolean(data.homeScreenTools?.cameraRollEnabled ?? data.home_screen_tools?.camera_roll_enabled),
-      audio_enabled: Boolean(data.homeScreenTools?.audioEnabled ?? data.home_screen_tools?.audio_enabled),
-      upload_enabled: Boolean(data.homeScreenTools?.uploadEnabled ?? data.home_screen_tools?.upload_enabled),
-      camera_off: Boolean(data.homeScreenTools?.cameraOff ?? data.home_screen_tools?.camera_off),
-      switch_camera: Boolean(data.homeScreenTools?.switchCamera ?? data.home_screen_tools?.switch_camera),
-      camera_flash: Boolean(data.homeScreenTools?.cameraFlash ?? data.home_screen_tools?.camera_flash),
+    homeScreenTools: {
+      hideButtons: Boolean(data.homeScreenTools?.hideButtons ?? data.home_screen_tools?.hide_buttons),
+      publicPrivateMode: Boolean(data.homeScreenTools?.publicPrivateMode ?? data.home_screen_tools?.public_private_mode),
+      textEnabled: Boolean(data.homeScreenTools?.textEnabled ?? data.home_screen_tools?.text_enabled),
+      pencilEnabled: Boolean(data.homeScreenTools?.pencilEnabled ?? data.home_screen_tools?.pencil_enabled),
+      shapesEnabled: Boolean(data.homeScreenTools?.shapesEnabled ?? data.home_screen_tools?.shapes_enabled),
+      cameraRollEnabled: Boolean(data.homeScreenTools?.cameraRollEnabled ?? data.home_screen_tools?.camera_roll_enabled),
+      audioEnabled: Boolean(data.homeScreenTools?.audioEnabled ?? data.home_screen_tools?.audio_enabled),
+      uploadEnabled: Boolean(data.homeScreenTools?.uploadEnabled ?? data.home_screen_tools?.upload_enabled),
+      cameraOff: Boolean(data.homeScreenTools?.cameraOff ?? data.home_screen_tools?.camera_off),
+      switchCamera: Boolean(data.homeScreenTools?.switchCamera ?? data.home_screen_tools?.switch_camera),
+      cameraFlash: Boolean(data.homeScreenTools?.cameraFlash ?? data.home_screen_tools?.camera_flash),
     },
     mode: {
-      color_mode: Boolean(data.mode?.colorMode ?? data.mode?.color_mode),
+      colorMode: Boolean(data.mode?.colorMode ?? data.mode?.color_mode),
       map: String(data.mode?.map ?? ''),
     },
   };
@@ -78,38 +78,38 @@ export const mapToProfileSettingsEntity = (data: any): ProfileSettingsEntity => 
 
 export const DEFAULT_PROFILE_SETTINGS: ProfileSettingsEntity = {
   updates: {
-    automatic_updates: false,
+    automaticUpdates: false,
   },
   notifications: {
-    object_in_proximity: '',
-    previously_viewed_object_in_proximity: '',
-    friends_request: false,
-    followed_by_new_user: false,
-    friend_followed_user_posts: false,
-    post_about_to_expire: '',
-    post_timed_out: false,
-    friend_post_about_to_expire: '',
-    post_has_been_reported: false,
-    message_from_friend: false,
-    new_features_available: false,
-    object_viewed: '',
-    object_sold: false,
+    objectInProximity: '',
+    previouslyViewedObjectInProximity: '',
+    friendsRequest: false,
+    followedByNewUser: false,
+    friendFollowedUserPosts: false,
+    postAboutToExpire: '',
+    postTimedOut: false,
+    friendPostAboutToExpire: '',
+    postHasBeenReported: false,
+    messageFromFriend: false,
+    newFeaturesAvailable: false,
+    objectViewed: '',
+    objectSold: false,
   },
-  home_screen_tools: {
-    hide_buttons: false,
-    public_private_mode: false,
-    text_enabled: false,
-    pencil_enabled: false,
-    shapes_enabled: false,
-    camera_roll_enabled: false,
-    audio_enabled: false,
-    upload_enabled: false,
-    camera_off: false,
-    switch_camera: false,
-    camera_flash: false,
+  homeScreenTools: {
+    hideButtons: false,
+    publicPrivateMode: false,
+    textEnabled: false,
+    pencilEnabled: false,
+    shapesEnabled: false,
+    cameraRollEnabled: false,
+    audioEnabled: false,
+    uploadEnabled: false,
+    cameraOff: false,
+    switchCamera: false,
+    cameraFlash: false,
   },
   mode: {
-    color_mode: false,
+    colorMode: false,
     map: '',
   },
 };

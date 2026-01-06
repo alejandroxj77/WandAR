@@ -14,8 +14,8 @@ import Label from '../Label';
 interface SettingsDropdownProps {
   label: string;
   value: string;
-  options: string[]; // Añadimos las opciones
-  onSelect: (item: string) => void; // Callback para cuando se elige algo
+  options: string[];
+  onSelect: (item: string) => void;
   style?: ViewStyle;
 }
 
@@ -42,7 +42,6 @@ const SettingsDropdown = ({ label, value, options, onSelect, style }: SettingsDr
         <Ionicons name={visible ? "chevron-up" : "chevron-down"} size={20} color="white" />
       </TouchableOpacity>
 
-      {/* Menú Desplegable */}
       <Modal visible={visible} transparent animationType="fade">
         <TouchableWithoutFeedback onPress={() => setVisible(false)}>
           <View style={styles.modalOverlay}>
@@ -77,7 +76,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
   },
   label: {
     color: 'white',
@@ -90,7 +88,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#37474f',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: 25,
     alignItems: 'center',
     minWidth: 100,
     justifyContent: 'space-between',
@@ -100,10 +98,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 5,
   },
-  // Estilos del Modal/Dropdown
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)', // Oscurece el fondo
+    backgroundColor: 'rgba(0,0,0,0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
