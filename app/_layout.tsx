@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 
 import { AuthenticationProvider } from '@/domain/contexts/authenticationContext';
+import { PostContentProvider } from '@/domain/contexts/postContentContext';
 import { ProfileProvider } from '@/domain/contexts/profileContext';
 import { useColorScheme } from '@/domain/hooks/use-color-scheme';
 import { PantonFonts } from '@/shared/constants/fonts';
@@ -43,15 +44,17 @@ export default function RootLayout() {
         <LoaderProvider>
           <AuthenticationProvider>
             <ProfileProvider>
-              <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
-              >
-                <Stack screenOptions={{ headerShown: false }}>
-                  <Stack.Screen name="authentication" options={{ headerShown: false }} />
-                </Stack>
-              </KeyboardAvoidingView>
+              <PostContentProvider>
+                <KeyboardAvoidingView
+                  style={{ flex: 1 }}
+                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+                >
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="authentication" options={{ headerShown: false }} />
+                  </Stack>
+                </KeyboardAvoidingView>
+              </PostContentProvider>
             </ProfileProvider>
           </AuthenticationProvider>
         </LoaderProvider>

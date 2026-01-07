@@ -1,33 +1,48 @@
-import { ViroARScene, ViroARSceneNavigator, ViroVideo } from '@reactvision/react-viro';
+import { usePostContent } from '@/domain/contexts/postContentContext';
+import { Viro3DObject, ViroARScene, ViroARSceneNavigator, ViroNode, ViroVideo } from '@reactvision/react-viro';
+import { useEffect } from 'react';
 import { View } from 'react-native';
 import ObjectPickerMenu from '../../presentation/molecules/ObjectPickerMenu';
 
+const ARScene = () => {
+    const { videos, shapes } = usePostContent();
+
+    return (
+        <ViroARScene>
+            {videos.map((video, index) => (
+                <ViroVideo
+                    key={`${video}-${index}`} // Add a key to force re-render if URI changes
+                    source={{ uri: video }}
+                    loop={true}
+                    position={[0, 0, -3]}
+                    scale={[1, 1, 0]}
+                />
+            ))}
+            {shapes.map((shape, index) => (
+                <ViroNode position={[0, 0, -3]} key={`${shape}-${index}`}>
+                    <Viro3DObject
+                        source={{ uri: shape }}
+                        position={[0, 0, -1]}
+                        type='GLB'
+                        onError={(event) => console.error('Viro3DObject Error:', event.nativeEvent.error)}
+                    />
+                </ViroNode>
+            ))}
+        </ViroARScene>
+    );
+};
+
 export default function PostContent() {
+    const { videos } = usePostContent();
+
+    useEffect(() => {
+        console.log(videos);
+    }, [videos]);
     return (
         <View style={{ flex: 1 }}>
             <ViroARSceneNavigator
                 initialScene={{
-                    scene: () => <ViroARScene>
-                        <ViroVideo
-                            source={require('../../assets/example_videos/eyes_without_a_face.mp4')}
-                            loop={true}
-                            position={[0, 0, -3]}
-                            scale={[2, 2, 0]}
-                        />
-                        {/* <ViroNode position={[0, 0, -3]}> */}
-                        {/* <Viro3DObject
-                                type="GLTF"
-                                source={require('../../assets/example_3d_models/shiba/scene.gltf')}
-                                position={[0, 0, -1]}
-                                materials={[
-                                    require('../../assets/example_3d_models/shiba/textures/default_baseColor.png')
-                                ]}
-                                resources={[
-                                    require('../../assets/example_3d_models/shiba/scene.bin')
-                                ]}
-                            /> */}
-                        {/* </ViroNode> */}
-                    </ViroARScene>
+                    scene: ARScene
                 }}
                 style={{ flex: 1 }}
             >
