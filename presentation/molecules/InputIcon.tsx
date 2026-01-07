@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Eye from '../atoms/icons/eye';
 import EyeClose from '../atoms/icons/eye_close';
 import Lock from '../atoms/icons/lock';
@@ -25,8 +25,9 @@ const PrefixIcons: Record<PrefixIconKey, React.ElementType> = {
 export const InputIconMolecule = ({ 
   prefixIcon = undefined, 
   postfixIcon = undefined,
+  styleContainer = undefined,
   ...props
-}: InputIconProps & InputAtomProps) => {
+}: InputIconProps & InputAtomProps & {styleContainer?: StyleProp<ViewStyle>}) => {
 
   const isPasswordToggle = postfixIcon === "toggle_password";
   const isEmailToggle = prefixIcon === "mail";
@@ -54,7 +55,7 @@ export const InputIconMolecule = ({
 
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styleContainer]}>
       {PrefixComponent && (
         <View style={styles.iconContainer}> 
            <PrefixComponent /> 

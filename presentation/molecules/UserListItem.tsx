@@ -4,7 +4,15 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import PrimaryButton from '../atoms/buttons/PrimaryButton';
 import Label from '../atoms/Label';
 
-const UserListItem = ({user, type}:{user:any, type: 'followed' | 'blocked'}) => {
+const UserListItem = ({
+    user, 
+    type,
+    onRemove,
+  }:{
+    user:any, 
+    type: 'followed' | 'blocked' | 'remove',
+    onRemove?: (() => void) | undefined,
+  }) => {
   const defaultAvatar = 'https://cdn-icons-png.flaticon.com/512/147/147144.png';
 
   return (
@@ -21,11 +29,13 @@ const UserListItem = ({user, type}:{user:any, type: 'followed' | 'blocked'}) => 
         </View>
 
         {
-            type == 'followed' && <View style={styles.actionsContainer}>
-                <Pressable onPress={user?.onAddPress} style={styles.iconButton}>
+            (type == 'followed' || type == 'remove') && <View style={styles.actionsContainer}>
+              {
+                type != 'remove' && <Pressable onPress={user?.onAddPress} style={styles.iconButton}>
                     <MaterialIcons name="person-add-alt-1" size={28} color="#0099FF" />
                 </Pressable>
-                <Pressable onPress={user?.onRemovePress} style={[styles.iconButton, styles.removeButtonMargin]}>
+              }
+                <Pressable onPress={onRemove} style={[styles.iconButton, styles.removeButtonMargin]}>
                     <MaterialIcons name="person-remove" size={28} color="#E50000" />
                 </Pressable>
             </View>

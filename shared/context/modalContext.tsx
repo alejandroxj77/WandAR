@@ -6,6 +6,7 @@ interface ModalOptions {
   content: React.JSX.Element;
   dismissible?: boolean;
   fullScreen?: boolean;
+  height?: number;
 }
 
 type ModalContextType = {
@@ -60,7 +61,8 @@ export const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) =
                     onPress={() => options?.dismissible !== false && hideModal()}
                 >
                 <Pressable onPress={(e) => e.stopPropagation()}> 
-                  <LinearGradientBackground style={styles.contentContainer}>
+                  <LinearGradientBackground style={{
+                      ...styles.contentContainer, height: options?.height ?? styles.contentContainer.height}}>
                       {options?.content}
                   </LinearGradientBackground>
               </Pressable>
