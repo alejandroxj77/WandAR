@@ -1,6 +1,7 @@
 import { useSocial } from '@/domain/contexts/socialContext';
 import PrimaryButton from '@/presentation/atoms/buttons/PrimaryButton';
 import LinearGradientBackground from '@/presentation/atoms/shared/LinearGradientBackground';
+import EmptyState from '@/presentation/molecules/EmptyState';
 import { InputIconMolecule } from '@/presentation/molecules/InputIcon';
 import UserListItem from '@/presentation/molecules/UserListItem';
 import { useModal } from '@/shared/context/modalContext';
@@ -70,29 +71,42 @@ export default function Social() {
             alignItems: 'center',
             marginBottom: insets.bottom + 40,
           }}>
-            <FlatList
-              data={friends}
-              showsVerticalScrollIndicator={false}
-              renderItem={
-                  (user)=>{
-                    return <UserListItem 
-                      key={user+'user'} 
-                      user={undefined} 
-                      type="remove"
-                      onRemove={async ()=>{
-                        const content = <UnfriendModal userName={user+'user'}/>;
-                        const result = await showModal({
-                            content,
-                            height: 250
-                        });
-                        if(result){
-                            
-                        }
-                      }}
+            {
+              friends.length == 0 
+                ? <View style={{flex: 1, justifyContent:'center', alignContent: 'center'}}>
+                    <EmptyState 
+                      title='Find Your Scouting Partners'
+                      description='It looks like you’re exploring solo for now. Bring your friends along for the ride and start building your AR community today.' 
+                      buttonLabel='Invite friends' 
+                      height={'50%'} 
+                      iconName={'face-man'} 
+                      onPress={()=>{}} 
                     />
-                  }
+                  </View> 
+                : <FlatList
+                    data={friends}
+                    showsVerticalScrollIndicator={false}
+                    renderItem={
+                      (user)=>{
+                        return <UserListItem 
+                          key={user+'user'} 
+                          user={undefined} 
+                          type="remove"
+                          onRemove={async ()=>{
+                            const content = <UnfriendModal userName={user+'user'}/>;
+                            const result = await showModal({
+                                content,
+                                height: 250
+                            });
+                            if(result){
+                                
+                            }
+                          }}
+                        />
+                      }
+                    }
+                  />
               }
-            />
           </View>
       </View>
     </LinearGradientBackground>
