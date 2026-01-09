@@ -340,81 +340,6 @@ PODS:
   - hermes-engine (0.81.5):
     - hermes-engine/Pre-built (= 0.81.5)
   - hermes-engine/Pre-built (0.81.5)
-  - IMGLYApparelEditor (1.66.0):
-    - IMGLYEditor (= 1.66.0)
-  - IMGLYCamera (1.66.0):
-    - IMGLYCoreUI (= 1.66.0)
-  - IMGLYCore (1.66.0):
-    - IMGLYEngine (= 1.66.0)
-  - IMGLYCoreUI (1.66.0):
-    - IMGLYCore (= 1.66.0)
-    - Kingfisher (>= 7.10.0)
-    - SwiftUIIntrospect (~> 1.1.2)
-  - IMGLYDesignEditor (1.66.0):
-    - IMGLYEditor (= 1.66.0)
-  - IMGLYEditor (1.66.0):
-    - IMGLYCamera (= 1.66.0)
-  - IMGLYEditorModule (1.66.0):
-    - hermes-engine
-    - IMGLYUI (= 1.66.0)
-    - RCTRequired
-    - RCTTypeSafety
-    - React-Core
-    - React-Core-prebuilt
-    - React-debug
-    - React-Fabric
-    - React-featureflags
-    - React-graphics
-    - React-ImageManager
-    - React-jsi
-    - React-NativeModulesApple
-    - React-RCTFabric
-    - React-renderercss
-    - React-rendererdebug
-    - React-utils
-    - ReactCodegen
-    - ReactCommon/turbomodule/bridging
-    - ReactCommon/turbomodule/core
-    - ReactNativeDependencies
-    - Yoga
-  - IMGLYEngine (1.66.0)
-  - IMGLYPhotoEditor (1.66.0):
-    - IMGLYEditor (= 1.66.0)
-  - IMGLYPostcardEditor (1.66.0):
-    - IMGLYEditor (= 1.66.0)
-  - IMGLYUI (1.66.0):
-    - IMGLYUI/All (= 1.66.0)
-  - IMGLYUI/All (1.66.0):
-    - IMGLYUI/ApparelEditor
-    - IMGLYUI/Camera
-    - IMGLYUI/Core
-    - IMGLYUI/CoreUI
-    - IMGLYUI/DesignEditor
-    - IMGLYUI/Editor
-    - IMGLYUI/PhotoEditor
-    - IMGLYUI/PostcardEditor
-    - IMGLYUI/VideoEditor
-  - IMGLYUI/ApparelEditor (1.66.0):
-    - IMGLYApparelEditor (= 1.66.0)
-  - IMGLYUI/Camera (1.66.0):
-    - IMGLYCamera (= 1.66.0)
-  - IMGLYUI/Core (1.66.0):
-    - IMGLYCore (= 1.66.0)
-  - IMGLYUI/CoreUI (1.66.0):
-    - IMGLYCoreUI (= 1.66.0)
-  - IMGLYUI/DesignEditor (1.66.0):
-    - IMGLYDesignEditor (= 1.66.0)
-  - IMGLYUI/Editor (1.66.0):
-    - IMGLYEditor (= 1.66.0)
-  - IMGLYUI/PhotoEditor (1.66.0):
-    - IMGLYPhotoEditor (= 1.66.0)
-  - IMGLYUI/PostcardEditor (1.66.0):
-    - IMGLYPostcardEditor (= 1.66.0)
-  - IMGLYUI/VideoEditor (1.66.0):
-    - IMGLYVideoEditor (= 1.66.0)
-  - IMGLYVideoEditor (1.66.0):
-    - IMGLYEditor (= 1.66.0)
-  - Kingfisher (8.6.2)
   - libavif/core (0.11.1)
   - libavif/libdav1d (0.11.1):
     - libavif/core
@@ -2475,7 +2400,6 @@ PODS:
   - SDWebImageWebPCoder (0.14.6):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.17)
-  - SwiftUIIntrospect (1.1.4)
   - ViroKit (1.0):
     - React
   - ViroReact (2.50.0):
@@ -2526,7 +2450,6 @@ DEPENDENCIES:
   - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
-  - "IMGLYEditorModule (from `../node_modules/@imgly/editor-react-native`)"
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
   - RCTRequired (from `../node_modules/react-native/Libraries/Required`)
@@ -2619,18 +2542,6 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleUtilities
     - GTMSessionFetcher
-    - IMGLYApparelEditor
-    - IMGLYCamera
-    - IMGLYCore
-    - IMGLYCoreUI
-    - IMGLYDesignEditor
-    - IMGLYEditor
-    - IMGLYEngine
-    - IMGLYPhotoEditor
-    - IMGLYPostcardEditor
-    - IMGLYUI
-    - IMGLYVideoEditor
-    - Kingfisher
     - libavif
     - libdav1d
     - libwebp
@@ -2641,7 +2552,6 @@ SPEC REPOS:
     - SDWebImageAVIFCoder
     - SDWebImageSVGCoder
     - SDWebImageWebPCoder
-    - SwiftUIIntrospect
     - ZXingObjC
 
 EXTERNAL SOURCES:
@@ -2710,8 +2620,6 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2025-07-07-RNv0.81.0-e0fc67142ec0763c6b6153ca2bf96df815539782
-  IMGLYEditorModule:
-    :path: "../node_modules/@imgly/editor-react-native"
   lottie-react-native:
     :path: "../node_modules/lottie-react-native"
   RCTDeprecation:
@@ -2910,19 +2818,6 @@ SPEC CHECKSUMS:
   GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   hermes-engine: 9f4dfe93326146a1c99eb535b1cb0b857a3cd172
-  IMGLYApparelEditor: ebecc209b26f581db97e91e61fe5e533bedffa40
-  IMGLYCamera: ca19e456be6817c4417fa59155467071914bc0bc
-  IMGLYCore: 6594422fe1d19b2d8fef17e4ceba684df67484c4
-  IMGLYCoreUI: b20c1a82c06328a71190e02c34e57a30d0a2ac35
-  IMGLYDesignEditor: 61220c4ca8c829972e4cab4c457d45a956b3d806
-  IMGLYEditor: 281320993f0d4bab8301b2facd3293b4dc37550a
-  IMGLYEditorModule: 06e2f49560909f66350557f6c51ad37be057d4b9
-  IMGLYEngine: f6ba6f73cbc04d13a192168fa88d12dd52ca842b
-  IMGLYPhotoEditor: ed1395b9d72f8f07431e5a2870115a89e6bb905c
-  IMGLYPostcardEditor: 07eb5388e1842ed3fff6a8fe72289b631aa3c5f5
-  IMGLYUI: 0fdc5be2fcba47fdbdf18cb2b659aebcf16a66d3
-  IMGLYVideoEditor: 8ab36442ad35f95a4f529371032e2961f79faa9a
-  Kingfisher: 23d18f54677d973b713e54ce6a8f5eef6e7056ba
   libavif: 84bbb62fb232c3018d6f1bab79beea87e35de7b7
   libdav1d: 23581a4d8ec811ff171ed5e2e05cd27bad64c39f
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
@@ -3006,12 +2901,11 @@ SPEC CHECKSUMS:
   SDWebImageAVIFCoder: afe194a084e851f70228e4be35ef651df0fc5c57
   SDWebImageSVGCoder: 15a300a97ec1c8ac958f009c02220ac0402e936c
   SDWebImageWebPCoder: e38c0a70396191361d60c092933e22c20d5b1380
-  SwiftUIIntrospect: 434b406dc6f5e30744bb6e180f90343f6a8eba8c
   ViroKit: d596b89e48ff6e7fc45b7116eae891a30b52981d
   ViroReact: dbd0d4dbe097eb8dda824ad2a8d506cb71d920bd
   Yoga: 65431d43277b661ebc7289c6c5d82f64ce42cfe0
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: c3737122a290e00aa07c84f188437abbdab3fc0d
+PODFILE CHECKSUM: a9c384d8d1a8eefa6020a32475292a5bd9df4716
 
 COCOAPODS: 1.16.2

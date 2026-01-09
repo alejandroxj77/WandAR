@@ -1,5 +1,4 @@
 import { usePostContent } from "@/domain/contexts/postContentContext";
-import { design_editor_solution } from "@/domain/useCases/editPhoto";
 import { useLoader } from "@/shared/context/loaderContext";
 import { pickFile } from "@/shared/utils/filePickerUtils";
 import pickImage from "@/shared/utils/imagePickerUtils";
@@ -43,7 +42,6 @@ export default function ObjectPickerMenu() {
                 console.log("MP4 URI:", mp4Uri);
                 addVideo({ videoUri: mp4Uri });
             } else {
-                design_editor_solution(mediaPicked.imageUri);
                 addImage({ imageUri: mediaPicked.imageUri });
             }
         } catch (error) {
