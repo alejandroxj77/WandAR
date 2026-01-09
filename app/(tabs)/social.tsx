@@ -1,11 +1,12 @@
+import { useSocial } from '@/domain/contexts/socialContext';
 import PrimaryButton from '@/presentation/atoms/buttons/PrimaryButton';
 import LinearGradientBackground from '@/presentation/atoms/shared/LinearGradientBackground';
 import { InputIconMolecule } from '@/presentation/molecules/InputIcon';
 import UserListItem from '@/presentation/molecules/UserListItem';
 import { useModal } from '@/shared/context/modalContext';
-import UnfriendModal from '@/shared/ui/modals/unfriend';
+import UnfriendModal from '@/shared/ui/modals/Unfriend';
 import { MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FlatList, Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +17,13 @@ export default function Social() {
   const { control, handleSubmit, formState: { errors } } = useForm({
     defaultValues: { search: '' }
   });
+  const { friends, getFriends } = useSocial();
+
+  useEffect(() => {
+    getFriends();
+  }, []);
+  
+
   return (
     <LinearGradientBackground>
       <View style={{
@@ -63,7 +71,7 @@ export default function Social() {
             marginBottom: insets.bottom + 40,
           }}>
             <FlatList
-              data={[1,2,3,4,5,6,7,8,9,0]}
+              data={friends}
               showsVerticalScrollIndicator={false}
               renderItem={
                   (user)=>{
