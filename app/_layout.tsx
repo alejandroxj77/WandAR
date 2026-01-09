@@ -8,6 +8,7 @@ import Toast from 'react-native-toast-message';
 
 import { AuthenticationProvider } from '@/domain/contexts/authenticationContext';
 import { ProfileProvider } from '@/domain/contexts/profileContext';
+import { SocialProvider } from '@/domain/contexts/socialContext';
 import { useColorScheme } from '@/domain/hooks/use-color-scheme';
 import { PantonFonts } from '@/shared/constants/fonts';
 import { LoaderProvider } from '@/shared/context/loaderContext';
@@ -39,15 +40,17 @@ export default function RootLayout() {
         <ModalProvider>
           <ProfileProvider>
             <AuthenticationProvider>
-              <KeyboardAvoidingView
-                style={{ flex: 1 }}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
-              >
-                <Stack screenOptions={{ headerShown: false }} initialRouteName='authentication'>
-                  <Stack.Screen name="authentication" options={{ headerShown: false }} />
-                </Stack>
-              </KeyboardAvoidingView>
+              <SocialProvider>
+                <KeyboardAvoidingView
+                  style={{ flex: 1 }}
+                  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                  keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+                >
+                  <Stack screenOptions={{ headerShown: false }} initialRouteName='authentication'>
+                    <Stack.Screen name="authentication" options={{ headerShown: false }} />
+                  </Stack>
+                </KeyboardAvoidingView>
+              </SocialProvider>
             </AuthenticationProvider>
           </ProfileProvider>
         </ModalProvider>

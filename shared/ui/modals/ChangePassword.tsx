@@ -21,7 +21,7 @@ const ChangePasswordModal = ({onSubmit}: {onSubmit(password: string): Promise<vo
 
     const passwordValue = watch("password");
     return (
-        <View style={{justifyContent: 'center', alignItems: 'center', gap: 10, flex: 1, padding: 16}}>
+        <View style={{justifyContent: 'space-between', alignItems: 'center', flex: 1, padding: 16}}>
             <Controller
                 control={control}
                 name="password"
