@@ -1,8 +1,9 @@
 import * as ImagePicker from 'expo-image-picker';
 
-const pickImage = async (): Promise<string | null> => {
+///This method returns the uri of the selected media picked from the gallery
+const pickImage = async ({ mediaTypes = ['images'] }: { mediaTypes?: ImagePicker.MediaType[] }): Promise<{ imageUri: string, type: string }> => {
   let result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ['images'],
+    mediaTypes: mediaTypes,
     allowsEditing: true,
     selectionLimit: 1,
     quality: 0.7,
@@ -10,10 +11,10 @@ const pickImage = async (): Promise<string | null> => {
 
   if (!result.canceled) {
     const imageUri = result.assets[0].uri;
-    return imageUri;
+    return { imageUri, type: result.assets[0].type!.toString() };
   }
 
-  return null;
+  throw new Error("No media picked");
 };
 
 export default pickImage;

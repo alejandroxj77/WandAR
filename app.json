@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "WandAR",
-    "slug": "WandAR",
+    "slug": "wandar",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -12,7 +12,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.paul.WandAR",
       "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
+        "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to import images for editing",
         "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos",
         "NSCameraUsageDescription": "Allow $(PRODUCT_NAME) to use your camera",
         "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to use your microphone",
@@ -23,6 +23,11 @@
       "appleTeamId": "9LLZ5DR43A"
     },
     "android": {
+      "minSdkVersion": 24,
+      "extraMavenRepos": [
+        "https://artifactory.img.ly/artifactory/maven"
+      ],
+      "kotlinVersion": "1.9.10",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -73,11 +78,36 @@
           }
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "react-native-compressor",
+      "expo-build-properties",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "minSdkVersion": 24,
+            "extraMavenRepos": [
+              "https://artifactory.img.ly/artifactory/maven"
+            ],
+            "kotlinVersion": "1.9.10"
+          },
+          "ios": {
+            "deploymentTarget": "16.0",
+            "useFrameworks": "dynamic"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "310d1f8f-2a7e-408f-b67a-8b15799f7139"
+      }
+    },
+    "owner": "seeker-xj77"
   }
 }
