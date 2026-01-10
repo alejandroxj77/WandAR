@@ -1,5 +1,6 @@
 import { useSocial } from '@/domain/contexts/socialContext';
 import PrimaryButton from '@/presentation/atoms/buttons/PrimaryButton';
+import LoaderAtom from '@/presentation/atoms/LoaderAtom';
 import LinearGradientBackground from '@/presentation/atoms/shared/LinearGradientBackground';
 import EmptyState from '@/presentation/molecules/EmptyState';
 import { InputIconMolecule } from '@/presentation/molecules/InputIcon';
@@ -72,7 +73,14 @@ export default function Social() {
             marginBottom: insets.bottom + 40,
           }}>
             {
-              friends.length == 0 
+              friends == undefined 
+              ? <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                  <LoaderAtom
+                    color='white'
+                    size={'large'}
+                  />
+                </View>
+              : friends.length == 0 
                 ? <View style={{flex: 1, justifyContent:'center', alignContent: 'center'}}>
                     <EmptyState 
                       title='Find Your Scouting Partners'

@@ -14,7 +14,7 @@ type SocialProviderProps = {
 }
 
 type SocialContextType = {
-    friends: Array<FriendEntity>;
+    friends: Array<FriendEntity> | undefined;
     getFriends: () => Promise<boolean>;
     requestFriend: (addresseeId: string) => Promise<boolean>;
     acceptFriend: (requestId: string) => Promise<boolean>;
@@ -22,7 +22,7 @@ type SocialContextType = {
 };
 
 const SocialContext = createContext<SocialContextType>({
-    friends: [],
+    friends: undefined,
     getFriends: async () => true,
     requestFriend: async () => true,
     acceptFriend: async () => true,
@@ -32,7 +32,7 @@ const SocialContext = createContext<SocialContextType>({
 const socialRepository = new SocialRepositoryImpl(new SocialDataSourceImpl());
 
 export const SocialProvider = ({ children }: SocialProviderProps) => {
-    const [friends, setFriends] = useState([] as Array<FriendEntity>);
+    const [friends, setFriends] = useState(undefined as Array<FriendEntity> | undefined);
     const { showLoader, hideLoader } = useLoader();
 
     const getFriends = async (): Promise<boolean> => {
