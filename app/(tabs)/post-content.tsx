@@ -1,8 +1,7 @@
 import { usePostContent } from '@/domain/contexts/postContentContext';
-import { Viro3DObject, ViroARScene, ViroARSceneNavigator, ViroNode, ViroVideo } from '@reactvision/react-viro';
+import { Viro3DObject, ViroARScene, ViroNode, ViroVideo } from '@reactvision/react-viro';
 import { useEffect } from 'react';
 import { View } from 'react-native';
-import ObjectPickerMenu from '../../presentation/molecules/ObjectPickerMenu';
 
 const ARScene = () => {
     const { videos, shapes } = usePostContent();
@@ -40,14 +39,14 @@ export default function PostContent() {
     }, [videos]);
     return (
         <View style={{ flex: 1 }}>
-            <ViroARSceneNavigator
+            {/* <ViroARSceneNavigator
                 initialScene={{
                     scene: ARScene
                 }}
                 style={{ flex: 1 }}
             >
             </ViroARSceneNavigator>
-            <ObjectPickerMenu />
+            <ObjectPickerMenu /> */}
         </View>
     );
 }
