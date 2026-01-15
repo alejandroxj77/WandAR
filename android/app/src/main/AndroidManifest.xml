@@ -3,7 +3,6 @@
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.CAMERA"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -20,8 +19,7 @@
   </queries>
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:supportsRtl="true" android:enableOnBackInvokedCallback="false" android:fullBackupContent="@xml/secure_store_backup_rules" android:dataExtractionRules="@xml/secure_store_data_extraction_rules">
     <meta-data android:name="com.google.android.ar.API_KEY" android:value="{your google cloud API key}"/>
-    <meta-data android:name="com.google.android.ar.API_KEY" android:value="{your google cloud API key}"/>
-    <meta-data android:name="com.google.ar.core" android:value="optional"/>
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAI7oULwcU-aEuiED222_Fp0CYBjzpaRUw"/>
     <meta-data android:name="com.google.ar.core" android:value="optional"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="false"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="ALWAYS"/>
@@ -30,8 +28,6 @@
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
-        <category android:name="com.google.intent.category.CARDBOARD"/>
-        <category android:name="com.google.intent.category.DAYDREAM"/>
         <category android:name="com.google.intent.category.CARDBOARD"/>
         <category android:name="com.google.intent.category.DAYDREAM"/>
       </intent-filter>
@@ -43,5 +39,6 @@
         <data android:scheme="exp+wandar"/>
       </intent-filter>
     </activity>
+    <uses-library android:name="org.apache.http.legacy" android:required="false"/>
   </application>
 </manifest>

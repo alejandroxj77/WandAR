@@ -7,6 +7,7 @@ import 'react-native-reanimated';
 import Toast from 'react-native-toast-message';
 
 import { AuthenticationProvider } from '@/domain/contexts/authenticationContext';
+import { MapProvider } from '@/domain/contexts/MapContext';
 import { PostContentProvider } from '@/domain/contexts/postContentContext';
 import { ProfileProvider } from '@/domain/contexts/profileContext';
 import { SocialProvider } from '@/domain/contexts/socialContext';
@@ -34,6 +35,7 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+  
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -43,15 +45,17 @@ export default function RootLayout() {
             <AuthenticationProvider>
               <SocialProvider>
                 <PostContentProvider>
-                  <KeyboardAvoidingView
-                    style={{ flex: 1 }}
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
-                  >
-                    <Stack screenOptions={{ headerShown: false }} initialRouteName='authentication'>
-                      <Stack.Screen name="authentication" options={{ headerShown: false }} />
-                    </Stack>
-                  </KeyboardAvoidingView>
+                  <MapProvider>
+                    <KeyboardAvoidingView
+                      style={{ flex: 1 }}
+                      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}
+                    >
+                      <Stack screenOptions={{ headerShown: false }} initialRouteName='authentication'>
+                        <Stack.Screen name="authentication" options={{ headerShown: false }} />
+                      </Stack>
+                    </KeyboardAvoidingView>
+                  </MapProvider>
                 </PostContentProvider>
               </SocialProvider>
             </AuthenticationProvider>

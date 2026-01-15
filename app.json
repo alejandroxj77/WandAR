@@ -32,7 +32,12 @@
       "softwareKeyboardLayoutMode": "pan",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.seekerxj77.WandAR"
+      "package": "com.seekerxj77.WandAR",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAI7oULwcU-aEuiED222_Fp0CYBjzpaRUw"
+        }
+      }
     },
     "web": {
       "output": "static",
@@ -62,6 +67,13 @@
         }
       ],
       [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Allow $(PRODUCT_NAME) to use your location"
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
@@ -74,7 +86,8 @@
         }
       ],
       "expo-secure-store",
-      "react-native-compressor"
+      "react-native-compressor",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true,
