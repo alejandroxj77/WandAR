@@ -1,4 +1,6 @@
-{
+import 'dotenv/config';
+
+export default {
   "expo": {
     "name": "WandAR",
     "slug": "wandar",
@@ -35,7 +37,7 @@
       "package": "com.seekerxj77.WandAR",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyAI7oULwcU-aEuiED222_Fp0CYBjzpaRUw"
+          "apiKey": process.env.GOOGLE_MAPS_API_KEY
         }
       }
     },
