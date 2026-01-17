@@ -1,5 +1,6 @@
 import { MarkersEntity } from "../entities/MapDataSourceEntity";
+import { MapQueryParams } from "../entities/MarkerQueryParams";
 
 export default interface MapDataSource {
-    getMarkers(): Promise<MarkersEntity>;
+    getMarkers(params: MapQueryParams): Promise<MarkersEntity>;
 }

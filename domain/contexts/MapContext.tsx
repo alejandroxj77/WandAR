@@ -1,11 +1,12 @@
 import { MarkersEntity } from "@/data/datasources/entities/MapDataSourceEntity";
+import { MapQueryParams } from "@/data/datasources/entities/MarkerQueryParams";
 import { MapDataSourceImpl } from "@/data/datasources/implementations/MapDataSourceImpl";
 import { MapRepositoryImpl } from "@/data/repositories/MapRepositoryImpl";
 import { createContext, useContext, useState } from "react";
 import getMarkersUseCase from "../useCases/getMarkersUseCase";
 
 const MapContext = createContext({
-    getMarkers: () => { },
+    getMarkers: (params: MapQueryParams) => { },
     markers: null as MarkersEntity | null,
 });
 
@@ -14,9 +15,9 @@ const mapRepository = new MapRepositoryImpl(new MapDataSourceImpl());
 export const MapProvider = ({ children }: { children: React.ReactNode }) => {
     const [markers, setMarkers] = useState(null as MarkersEntity | null);
     
-    async function getMarkers() {
+    async function getMarkers(params: MapQueryParams) {
         try {
-            const response = await getMarkersUseCase({mapRepository});
+            const response = await getMarkersUseCase({params, mapRepository});
             setMarkers(response);
         } catch (error) {
             throw error;

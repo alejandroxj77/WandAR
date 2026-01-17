@@ -100,6 +100,8 @@ export const AuthenticationProvider = ({ children }: AuthenticationProviderProps
 
     function setHeaderToken(session?: Session) {
         if (session) {
+            console.log('session.access_token');
+            console.log(`Bearer ${session.access_token}`);
             httpClient.defaults.headers['Authorization'] = `Bearer ${session.access_token}`;
         } else {
             httpClient.defaults.headers['Authorization'] = ``;

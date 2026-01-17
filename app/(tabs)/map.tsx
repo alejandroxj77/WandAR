@@ -1,3 +1,4 @@
+import { useMap } from "@/domain/contexts/MapContext";
 import DropdownCustom from "@/presentation/atoms/buttons/DropdownCustom";
 import CenterUbication from "@/presentation/atoms/icons/CenterUbication";
 import * as Location from "expo-location";
@@ -7,6 +8,7 @@ import { Alert, Platform, Pressable, StyleSheet, Text, View } from "react-native
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Map() {
+  const {getMarkers, markers} = useMap();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const mapRef = useRef<any>(null);
   useEffect(() => {
@@ -27,6 +29,15 @@ export default function Map() {
         longitude: location.coords.longitude,
       },
       zoom: 15,
+    });
+
+    getMarkers({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      limit: 100,
+      page: 1, 
+      zoom: 1,
+      radius: 1000
     });
   };
 
@@ -51,7 +62,31 @@ export default function Map() {
           uiSettings={{
             myLocationButtonEnabled: false,
           }}
-          markers={markersApple}
+          markers={[
+            ...(markers?.clusters?.map((e) => ({
+              coordinates: { 
+                latitude: e.centroid.lat, 
+                longitude: e.centroid.lng 
+              },
+              title: e.points[0]?.title || "Cluster",
+              snippet: e.points[0]?.body || "",
+              draggable: true,
+              tintColor: "brown",
+              systemImage: "cup.and.saucer.fill"
+            })) ?? []),
+
+            ...(markers?.individualMarkers?.map((e) => ({
+              coordinates: { 
+                latitude: Number(e.latitude),
+                longitude: Number(e.longitude)
+              },
+              title: e.title,
+              snippet: e.body,
+              draggable: true,
+              tintColor: "brown",
+              systemImage: "cup.and.saucer.fill"
+            })) ?? []),
+          ]}
         />
       ) : (
         <GoogleMaps.View 
@@ -60,7 +95,27 @@ export default function Map() {
             zoomControlsEnabled: false,
             myLocationButtonEnabled: false,
           }}
-          markers={markersGoogle}
+          markers={[
+            ...(markers?.clusters?.map((e) => ({
+              coordinates: { 
+                latitude: e.centroid.lat, 
+                longitude: e.centroid.lng 
+              },
+              title: e.points[0]?.title || "Cluster",
+              snippet: e.points[0]?.body || "",
+              draggable: true,
+            })) ?? []),
+
+            ...(markers?.individualMarkers?.map((e) => ({
+              coordinates: { 
+                latitude: Number(e.latitude),
+                longitude: Number(e.longitude)
+              },
+              title: e.title,
+              snippet: e.body,
+              draggable: true,
+            })) ?? []),
+          ]}
         />
       )}
 
@@ -116,22 +171,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
 });
-
-const markersGoogle = [
-  {
-    coordinates: { latitude: 49.259133, longitude: -123.10079 },
-    title: "49th Parallel Café & Lucky's Doughnuts - Main Street",
-    snippet: "49th Parallel Café & Lucky's Doughnuts - Main Street",
-    draggable: true,
-  },
-];
-
-const markersApple = [
-
-  {
-    coordinates: { latitude: 49.259133, longitude: -123.10079 },
-    title: "49th Parallel Café & Lucky's Doughnuts - Main Street",
-    tintColor: "brown",
-    systemImage: "cup.and.saucer.fill",
-  },
-];
